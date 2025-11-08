@@ -2,7 +2,8 @@ const cookieParser = require('cookie-parser');
 const express = require('express')
 const authRoutes = require("./routes/auth.routes")
 const cors = require("cors")
-
+const todoRoutes = require("./routes/todo.routes")
+const streakRoutes = require("./routes/streak.routes")
 
 const app = express()
 app.use(express.json())
@@ -15,6 +16,8 @@ app.use(cors({
 
 
 app.use("/auth" , authRoutes)
+app.use("/todos", todoRoutes);
+app.use("/streak", streakRoutes);
 
 
 module.exports=app;
