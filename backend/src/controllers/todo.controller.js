@@ -5,7 +5,8 @@ async function createTodo(req,res) {
         const{task}=req.body;
         const todo = await Todo.create({
             userId:req.userId,
-            task
+            task,
+             completed: false
         })
         res.status(201).json(todo);
     }catch(err){
