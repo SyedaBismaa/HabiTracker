@@ -1,13 +1,11 @@
 import React from 'react'
+import DashboardLayout from '../layout/DashboardLayout'
 
 const LeaderBoard = () => {
   return (
     <div>
-          <div className="sidebar">
-        <Sidebar/>
-      </div>
-        
-        LeaderBoard</div>
+      <DashboardLayout/>
+      LeaderBoard</div>
   )
 }
 

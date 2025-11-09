@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Journals from "./pages/Journals";
+import LeaderBoard from "./pages/LeaderBoard";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -11,6 +14,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/" element={<App />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/profile" element={<Profile />} />
+        <Route path="/journals" element={<Journals />} />
+        <Route path="/leaderboard" element={<LeaderBoard />} />
     </Routes>
   </BrowserRouter>
 );

@@ -1,12 +1,13 @@
 import React from 'react'
+import DashboardLayout from '../layout/DashboardLayout'
 
 const Journals = () => {
   return (
     <div>
-          <div className="sidebar">
-        <Sidebar/>
-      </div>
-        Journals</div>
+      <DashboardLayout/>
+      Journals
+
+    </div>
   )
 }
 

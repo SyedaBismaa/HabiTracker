@@ -8,7 +8,7 @@ const Sidebar = () => {
 
   const links = [
     { name: "Home", path: "/", icon: <Home size={20} /> },
-    { name: "Profile", path: "/profile", icon: <User size={20} /> },
+    { name: "Profile", path: "/Profile", icon: <User size={20} /> },
     { name: "Journals", path: "/journals", icon: <BookOpen size={20} /> },
     { name: "Leaderboard", path: "/leaderboard", icon: <Trophy size={20} /> },
     { name: "Register", path: "/register", icon: <Trophy size={20} /> },
