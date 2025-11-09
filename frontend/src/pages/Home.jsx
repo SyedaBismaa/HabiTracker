@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import DashboardLayout from "../layout/DashboardLayout";
+import Calendar from "../components/Calender";
 
 const Home = () => {
   const [user, setUser] = useState(null);
@@ -15,7 +16,6 @@ const Home = () => {
           axios.get("http://localhost:3000/auth/user", { withCredentials: true }),
           axios.get("http://localhost:3000/todos", { withCredentials: true }),
         ]);
-
         setUser(userRes.data.user);
         setTodos(todosRes.data);
       } catch (error) {
@@ -24,15 +24,12 @@ const Home = () => {
         setLoading(false);
       }
     };
-
     fetchUserAndTodos();
   }, []);
 
-  // ✅ Add new todo
   const handleAddTodo = async (e) => {
     e.preventDefault();
     if (!newTask.trim()) return;
-
     try {
       const res = await axios.post(
         "http://localhost:3000/todos",
@@ -46,7 +43,6 @@ const Home = () => {
     }
   };
 
-  // ✅ Toggle todo completion
   const toggleTodo = async (id) => {
     try {
       const res = await axios.patch(
@@ -64,7 +60,6 @@ const Home = () => {
     }
   };
 
-  // 🗑️ Delete todo
   const deleteTodo = async (id) => {
     try {
       await axios.delete(`http://localhost:3000/todos/${id}`, {
@@ -85,51 +80,52 @@ const Home = () => {
   }
 
   return (
-    <div className="flex min-h-screen w-full bg-gray-900 text-white">
+    <div className="flex min-h-screen  bg-gray-900 text-white">
       <DashboardLayout />
 
-      {/* 🧩 Main Content */}
-      <div className="flex-1 p-4 sm:p-8 ml-16 sm:ml-20">
-        {/* User Info */}
-        <div className="mb-6">
-          <h1 className="text-2xl font-semibold">
+      {/* Main Section */}
+      <div className="flex-1 ml-16 sm:ml-20 p-5 md:p-8 lg:p-10 transition-all">
+        {/* Header */}
+        <div className="m-5 p-2 border-gray-700 border-1 rounded-full justify-center items-start flex flex-col">
+          <h1 className="text-3xl font-semibold  ">
             👋 Hi, <span className="text-indigo-400">{user?.username || "User"}</span>
           </h1>
-          <p className="text-gray-400 mt-1">Here are your tasks for today:</p>
+          <p className="text-gray-400 mt-2 ml-2 text-sm sm:text-base">
+            Here are your tasks for today:
+          </p>
         </div>
 
-        {/* 📱 Responsive Grid — Todos + Calendar */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* ✅ Todos Section */}
-          <div className="bg-gray-800 rounded-lg p-6 shadow-md border border-gray-700">
-            {/* Add Todo */}
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {/* 📝 Todo Section */}
+          <div className="bg-gray-900 border border-gray-800 rounded-2xl p-6 shadow-lg shadow-indigo-900/10">
             <form onSubmit={handleAddTodo} className="flex flex-col sm:flex-row gap-3 mb-6">
               <input
                 type="text"
                 placeholder="Enter new task..."
                 value={newTask}
                 onChange={(e) => setNewTask(e.target.value)}
-                className="flex-1 p-3 rounded-lg bg-gray-900 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="flex-1 p-3 rounded-lg bg-gray-800 border border-gray-700 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
               <button
                 type="submit"
-                className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg font-semibold"
+                className="bg-indigo-600 hover:bg-indigo-500 px-4 py-2 rounded-lg font-semibold transition"
               >
                 Add
               </button>
             </form>
 
-            {/* Todos List */}
-            <h2 className="text-lg font-semibold text-indigo-300 mb-4">Your Todos</h2>
+            <h2 className="text-xl font-semibold text-indigo-300 mb-4">Your Todos</h2>
+
             {todos.length > 0 ? (
               <ul className="space-y-3">
                 {todos.map((todo) => (
                   <li
                     key={todo._id}
-                    className={`p-3 rounded-md flex flex-col sm:flex-row justify-between items-start sm:items-center transition ${
+                    className={`p-4 rounded-md flex flex-col sm:flex-row justify-between items-start sm:items-center transition-all duration-300 shadow-md ${
                       todo.completed
-                        ? "bg-green-700/30 text-gray-400 line-through"
-                        : "bg-gray-700 hover:bg-gray-600"
+                        ? "bg-green-700/20 border border-green-600 text-gray-400 line-through"
+                        : "bg-gray-800 border border-gray-700 hover:bg-gray-700/80"
                     }`}
                   >
                     <span>{todo.task}</span>
@@ -157,14 +153,21 @@ const Home = () => {
                 ))}
               </ul>
             ) : (
-              <p className="text-gray-400">No todos yet. Create one!</p>
+              <p className="text-gray-400 text-center py-10">No todos yet. Create one!</p>
             )}
           </div>
 
           {/* 🗓️ Calendar Section */}
-          <div className="bg-red-600/30 border border-red-700 rounded-lg p-6 flex flex-col items-center justify-center text-center shadow-md">
-            <h1 className="text-3xl font-bold text-white mb-2">📅 Calendar</h1>
-            <p className="text-gray-200">Coming soon — track your daily habits visually!</p>
+          <div className=" h-120 bg-gray-900 border border-gray-800 rounded-2xl p-5 shadow-lg shadow-indigo-900/10 flex flex-col items-center justify-center">
+            <h2 className="text-xl font-semibold text-indigo-300 mb-4">
+              📅 Your Calendar
+            </h2>
+            <div className="w-full max-w-sm">
+              <Calendar />
+            </div>
+            <p className="text-gray-400 text-sm mt-4 text-center">
+              View your monthly overview — habit tracking coming soon!
+            </p>
           </div>
         </div>
       </div>
