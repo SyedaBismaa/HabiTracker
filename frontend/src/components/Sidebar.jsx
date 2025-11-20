@@ -1,9 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Home, BookOpen, Trophy, User, Menu, X, LogIn, LogOut, Notebook } from "lucide-react";
+import {
+  Home,
+  BookOpen,
+  Trophy,
+  User,
+  Menu,
+  X,
+  LogIn,
+  LogOut,
+  Notebook,
+} from "lucide-react";
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
 
   const links = [
@@ -28,9 +37,9 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-screen bg-[#0f172a] text-white transition-all duration-300 z-40 border-r border-gray-800 flex flex-col shadow-lg
-        ${isOpen ? "w-60" : "w-16"}
-      `}
+        className={`fixed top-0 left-0 h-screen bg-[#0f172a] text-white transition-all duration-300 z-40 border-r border-gray-800 flex flex-col shadow-lg ${
+          isOpen ? "w-60" : "w-16"
+        }`}
       >
         {/* Logo */}
         <div className="flex items-center justify-center h-16 border-b border-gray-800">
@@ -47,7 +56,7 @@ const Sidebar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`group flex items-center rounded-lg transition-all duration-200 px-4 py-3 mx-2 ${
+              className={`group flex items-center rounded-lg transition-all duration-200 px-4 py-3 mx-2 relative ${
                 location.pathname === link.path
                   ? "bg-indigo-600 text-white"
                   : "text-gray-300 hover:bg-gray-800"

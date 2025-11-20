@@ -6,6 +6,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Journals from "./pages/Journals";
+import JournalDetails from "./pages/JournalDetails";
 import LeaderBoard from "./pages/LeaderBoard";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -16,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
         <Route path="/journals" element={<Journals />} />
+          <Route path="/journals/:id" element={<JournalDetails />} />
         <Route path="/leaderboard" element={<LeaderBoard />} />
     </Routes>
   </BrowserRouter>

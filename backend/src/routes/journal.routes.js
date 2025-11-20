@@ -3,6 +3,11 @@ const router = express.Router();
 
 const journalController = require("../controllers/journal.controller");
 const authMiddleware = require("../middlewares/auth.middlewares");
+const uploadImage = require("../controllers/uploadImage.controller");
+const fileUpload = require("express-fileupload");
+router.use(fileUpload());
+router.post("/upload", authMiddleware, uploadImage);
+
 
 router.post("/", authMiddleware, journalController.createJournal);
 router.get("/", authMiddleware, journalController.getJournals);
