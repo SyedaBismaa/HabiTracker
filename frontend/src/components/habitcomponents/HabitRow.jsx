@@ -16,7 +16,6 @@ const HabitRow = ({ habit, days = [], onToggle = () => {}, onDelete = () => {} }
         {/* DELETE BUTTON */}
         <button
   onClick={() => {
-    console.log("DELETE CLICKED — habitId:", habit._id);
     onDelete(habit._id);
   }}
   className="text-red-400 hover:text-red-600 text-sm font-bold"
