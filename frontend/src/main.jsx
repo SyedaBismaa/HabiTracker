@@ -9,6 +9,7 @@ import Journals from "./pages/Journals";
 import JournalDetails from "./pages/JournalDetails";
 import LeaderBoard from "./pages/LeaderBoard";
 import Todo from "./pages/Todo";
+import HabitPage from "./pages/HabitPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/journals" element={<Journals />} />
           <Route path="/journals/:id" element={<JournalDetails />} />
         <Route path="/leaderboard" element={<LeaderBoard />} />
+        <Route path="/habits" element={<HabitPage />} />
     </Routes>
   </BrowserRouter>
 );
