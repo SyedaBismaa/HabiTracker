@@ -16,7 +16,8 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
   const location = useLocation();
 
   const links = [
-    { name: "Home", path: "/", icon: <Home size={20} /> },
+    {name: "Home", path: "/", icon: <Home size={20} /> },
+    { name: "Todo", path: "/todo", icon: <Home size={20} /> },
     { name: "Profile", path: "/profile", icon: <User size={20} /> },
     { name: "Journals", path: "/journals", icon: <Notebook size={20} /> },
     { name: "Leaderboard", path: "/leaderboard", icon: <Trophy size={20} /> },
