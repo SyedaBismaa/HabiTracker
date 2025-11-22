@@ -5,6 +5,8 @@ const cors = require("cors")
 const todoRoutes = require("./routes/todo.routes")
 const streakRoutes = require("./routes/streak.routes")
 const journalRoutes = require("./routes/journal.routes")
+const habitsRoutes = require("./routes/habit.routes")
+const habitlogRoutes = require("./routes/habitLog.routes")
 
 const app = express()
 app.use(express.json())
@@ -20,6 +22,8 @@ app.use("/auth" , authRoutes)
 app.use("/todos", todoRoutes);
 app.use("/streak", streakRoutes);
 app.use("/journals",journalRoutes);
+app.use("/habits", habitsRoutes);
+app.use("/habitlog", habitlogRoutes);
 
 
 module.exports=app;
