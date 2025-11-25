@@ -21,10 +21,12 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: "Profile", path: "/profile", icon: <User size={20} /> },
     { name: "Journals", path: "/journals", icon: <Notebook size={20} /> },
     { name: "habits", path: "/habits", icon: <Notebook size={20} /> },
+    { name: "Posts", path: "/posts", icon: <BookOpen size={20} /> },
     { name: "Leaderboard", path: "/leaderboard", icon: <Trophy size={20} /> },
     { name: "Register", path: "/register", icon: <LogIn size={20} /> },
     { name: "Login", path: "/login", icon: <LogIn size={20} /> },
     { name: "Logout", path: "/logout", icon: <LogOut size={20} /> },
+    
   ];
 
   return (

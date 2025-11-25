@@ -6,14 +6,19 @@ const imagekit = new ImageKit({
     urlEndpoint: process.env.URL_ENDPOINT,
 });
 
-async function uploadFile(file, fileName) {
+// Optional helper function (keep it if you want)
+async function uploadFile(file, fileName, folder = "/habitracker/journals") {
     const response = await imagekit.upload({
         file,
         fileName,
-        folder: "/journals",
+        folder
     });
 
     return response;
 }
 
-module.exports = uploadFile;
+// EXPORT BOTH
+module.exports = {
+    imagekit,
+    uploadFile
+};

@@ -1,10 +1,13 @@
 const userModel = require("../models/user.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt")
+const imagekit = require("../service/Imagekit.service");
+
 
 async function registerUser(req, res) {
   try {
-    const { username, email, password } = req.body;
+   const { username, email, password, avatar, bio } = req.body;
+;
 
     // check if email already exists
     const existingUser = await userModel.findOne({ email });
@@ -17,11 +20,14 @@ async function registerUser(req, res) {
     // hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await userModel.create({
-      username,
-      email,
-      password: hashedPassword,
-    });
+   const user = await userModel.create({
+  username,
+  email,
+  password: hashedPassword,
+  avatar: avatar || null,
+  bio: bio || "",
+});
+
 
     const token = jwt.sign(
       { id: user._id },
@@ -94,6 +100,8 @@ async function loginUser(req,res) {
   }
     
 }
+
+
 
 
 async function getUser(req,res) {

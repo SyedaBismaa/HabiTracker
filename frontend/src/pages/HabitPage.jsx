@@ -12,9 +12,7 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:3000";
 axios.defaults.withCredentials = true;
 
-// ----------------------
-// Stats helpers
-// ----------------------
+
 function computeHabitCompletion(habitId, logsForHabit, monthDaysCount) {
   const doneCount = (logsForHabit || []).filter((l) => l.status).length;
   const pct = monthDaysCount === 0 ? 0 : (doneCount / monthDaysCount) * 100;

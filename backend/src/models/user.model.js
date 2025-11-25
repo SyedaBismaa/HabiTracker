@@ -12,6 +12,26 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    avatar:{
+        type:String,
+        required:false
+    },
+    bio:{
+        type:String,
+        required:false
+    },
+    followers:{
+        type:Array,
+        default:[]
+    },
+    following:{
+        type:Array,
+        default:[]
+    },
+    xp:{
+        type:Number,
+        default:0
     }
 })
 

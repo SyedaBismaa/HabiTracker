@@ -7,6 +7,7 @@ const streakRoutes = require("./routes/streak.routes")
 const journalRoutes = require("./routes/journal.routes")
 const habitsRoutes = require("./routes/habit.routes")
 const habitlogRoutes = require("./routes/habitLog.routes")
+const usersRoutes = require("./routes/users.routes")
 
 const app = express()
 app.use(express.json())
@@ -24,6 +25,7 @@ app.use("/streak", streakRoutes);
 app.use("/journals",journalRoutes);
 app.use("/habits", habitsRoutes);
 app.use("/habitlog", habitlogRoutes);
+app.use("/users", usersRoutes)
 
 
 module.exports=app;

@@ -1,4 +1,4 @@
-const uploadFile = require("../service/Imagekit.service");
+const {uploadFile} = require("../service/Imagekit.service");
 
 async function uploadImage(req, res) {
   try {
