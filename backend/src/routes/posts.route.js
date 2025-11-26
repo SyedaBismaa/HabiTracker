@@ -8,19 +8,23 @@ const {
   createPost,
   likePost,
   getAllPosts,
-  getUserPosts
+  getUserPosts,
+  deletePost,
+  deleteComment,
+  addComment
 } = require("../controllers/posts.controller");
 
-// Create post
 router.post("/create", auth, upload.single("image"), createPost);
 
-// Like/unlike
 router.put("/like/:id", auth, likePost);
 
-// All posts
 router.get("/", auth, getAllPosts);
 
-// User posts
 router.get("/user/:id", auth, getUserPosts);
+router.post("/comment/:id", auth, addComment);
+
+router.delete("/delete/:id", auth, deletePost);
+router.delete("/comment/:id/:commentId", auth, deleteComment);
+
 
 module.exports = router;

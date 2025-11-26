@@ -23,6 +23,15 @@ const postSchema = new mongoose.Schema({
       ref: "userModel"
     }
   ],
+  comments: [
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "userModel" },
+    username: String,
+    text: String,
+    createdAt: { type: Date, default: Date.now }
+  }
+],
+
 
   createdAt: {
     type: Date,

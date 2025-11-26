@@ -106,9 +106,103 @@ async function getUserPosts(req, res) {
     res.status(500).json({ message: "Error", error: error.message });
   }
 }
+
+
+async function deletePost(req, res) {
+  try {
+    const postId = req.params.id;
+    const userId = req.user.id;
+
+    // Find post
+    const post = await postModel.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    // Only author can delete
+    if (post.user.toString() !== userId) {
+      return res.status(403).json({ message: "Unauthorized to delete this post" });
+    }
+
+    // Delete post
+    await postModel.findByIdAndDelete(postId);
+
+    return res.json({ message: "Post deleted successfully" });
+
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+async function addComment(req, res) {
+  try {
+    const post = await postModel.findById(req.params.id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    post.comments.push({
+      user: req.user.id,
+      username: req.user.username,
+      text: req.body.text,
+    });
+
+    await post.save();
+
+    res.json({ message: "Comment added", post });
+
+  } catch (err) {
+    res.status(500).json({ message: "Error", error: err.message });
+  }
+}
+async function deleteComment(req, res) {
+  try {
+    const { id, commentId } = req.params; // postId + commentId
+    const userId = req.user.id;
+
+    const post = await postModel.findById(id);
+    if (!post) return res.status(404).json({ message: "Post not found" });
+
+    // Find the comment
+    const commentIndex = post.comments.findIndex(
+      (c) => c._id.toString() === commentId
+    );
+
+    if (commentIndex === -1)
+      return res.status(404).json({ message: "Comment not found" });
+
+    const comment = post.comments[commentIndex];
+
+    // Allow delete ONLY if:
+    // 1️⃣ Comment owner OR 2️⃣ Post owner
+    if (
+      comment.user.toString() !== userId &&
+      post.user.toString() !== userId
+    ) {
+      return res.status(403).json({ message: "Not allowed to delete comment" });
+    }
+
+    // Remove the comment correctly
+    post.comments.splice(commentIndex, 1);
+
+    await post.save();
+
+    res.json({ message: "Comment deleted", post });
+
+  } catch (error) {
+    res.status(500).json({
+      message: "Error deleting comment",
+      error: error.message,
+    });
+  }
+}
+
+
+
 module.exports = {
     createPost,
     likePost,
     getAllPosts,
-    getUserPosts
+    getUserPosts,
+    deletePost,
+    addComment,
+     deleteComment
 };
