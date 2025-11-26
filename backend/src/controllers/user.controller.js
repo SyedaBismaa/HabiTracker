@@ -1,42 +1,45 @@
-
+const userModel = require("../models/user.model");
+const { imagekit } = require("../service/Imagekit.service");
 
 async function updateProfile(req, res) {
   try {
     const userId = req.user.id;
 
-    // Find current user
-    const user = await userModel.findById(userId);
+    let avatarUrl = null;
 
-    let avatarUrl = user.avatar; // Keep the old avatar by default
-
-    // If avatar file is uploaded → replace it
+    // Upload avatar if a file is provided
     if (req.file) {
-      const upload = await imagekit.upload({
+      const uploadResult = await imagekit.upload({
         file: req.file.buffer.toString("base64"),
         fileName: `avatar_${userId}_${Date.now()}.jpg`,
-        folder: "/habitracker/users"
+        folder: "/habitracker/users",
       });
 
-      avatarUrl = upload.url; // Replace old avatar
+      avatarUrl = uploadResult.url;
     }
 
-    // Update profile fields
-    user.avatar = avatarUrl;
-    user.bio = req.body.bio ?? user.bio;
+    const updatedData = {
+      username: req.body.username,
+      bio: req.body.bio,
+    };
 
-    await user.save();
+    if (avatarUrl) {
+      updatedData.avatar = avatarUrl;
+    }
 
-    return res.json({
-      message: "Profile Updated",
-      user
+    const updatedUser = await userModel
+      .findByIdAndUpdate(userId, updatedData, { new: true })
+      .select("-password");
+
+    res.json({
+      message: "Profile updated successfully",
+      user: updatedUser,
     });
 
   } catch (error) {
-    return res.status(500).json({ message: "Error", error: error.message });
+    console.error("UPDATE ERROR:", error);
+    res.status(500).json({ message: "Failed to update profile", error: error.message });
   }
 }
 
-
-module.exports = {
-  updateProfile
-}
+module.exports = { updateProfile };

@@ -1,9 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const AvatarUpload = () => {
+const Avatar = ({ src, size = "w-24 h-24" }) => {
   return (
-    <div>AvatarUpload</div>
-  )
-}
+    <div className={`relative ${size}`}>
+      <img
+        src={src || "https://via.placeholder.com/150"}
+        className="rounded-full object-cover w-full h-full border-4 border-indigo-500 shadow-lg"
+        alt="avatar"
+      />
+    </div>
+  );
+};
 
-export default AvatarUpload
+export default Avatar;
