@@ -12,9 +12,10 @@ const FollowingModal = ({ username, isOpen, onClose }) => {
   const fetchFollowing = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/users/profile/${username}`
+        `http://localhost:3000/users/following/${username}`,
+        { withCredentials: true }
       );
-      setFollowing(res.data.user.following || []);
+      setFollowing(res.data.following);
     } catch (error) {
       console.error("Following fetch error:", error);
     }
@@ -24,11 +25,7 @@ const FollowingModal = ({ username, isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-40">
-      <div className="bg-gray-900 w-80 max-h-[75vh] rounded-xl overflow-y-auto shadow-lg p-4">
-
-        <h2 className="text-xl font-semibold text-white mb-4 text-center">
-          Following
-        </h2>
+      <div className="bg-gray-900 w-80 max-h-[75vh] rounded-xl overflow-y-auto shadow-lg p-4 relative">
 
         {/* Close Button */}
         <button
@@ -38,12 +35,16 @@ const FollowingModal = ({ username, isOpen, onClose }) => {
           ✕
         </button>
 
+        <h2 className="text-xl font-semibold text-white mb-4 text-center">
+          Following
+        </h2>
+
         {/* List */}
         {following.length === 0 ? (
           <p className="text-gray-400 text-center">Not following anyone</p>
         ) : (
-          following.map((id) => (
-            <UserListItem key={id} user={{ username: "loading", avatar: "", bio: "" }} />
+          following.map((user) => (
+            <UserListItem key={user._id} user={user} />
           ))
         )}
       </div>

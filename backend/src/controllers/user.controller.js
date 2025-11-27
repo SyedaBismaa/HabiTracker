@@ -159,11 +159,49 @@ async function checkFollowStatus(req, res) {
     res.status(500).json({ message: "Server Error" });
   }
 }
+async function getFollowersList(req, res) {
+  try {
+    const { username } = req.params;
+
+    const user = await userModel.findOne({ username });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const followers = await userModel
+      .find({ _id: { $in: user.followers } })
+      .select("username avatar bio");
+
+    res.json({ followers });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
+
+// Following list
+async function getFollowingList(req, res) {
+  try {
+    const { username } = req.params;
+
+    const user = await userModel.findOne({ username });
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const following = await userModel
+      .find({ _id: { $in: user.following } })
+      .select("username avatar bio");
+
+    res.json({ following });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
 
 module.exports = {
  updateProfile,
   getPublicProfile,
   followUser,
   unfollowUser,
-  checkFollowStatus
+  checkFollowStatus,
+  getFollowersList,
+  getFollowingList
   };

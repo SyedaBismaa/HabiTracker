@@ -12,9 +12,10 @@ const FollowersModal = ({ username, isOpen, onClose }) => {
   const fetchFollowers = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/users/profile/${username}`
+        `http://localhost:3000/users/followers/${username}`,
+        { withCredentials: true }
       );
-      setFollowers(res.data.user.followers || []);
+      setFollowers(res.data.followers);
     } catch (error) {
       console.error("Followers fetch error:", error);
     }
@@ -24,13 +25,9 @@ const FollowersModal = ({ username, isOpen, onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-40">
-      <div className="bg-gray-900 w-80 max-h-[75vh] rounded-xl overflow-y-auto shadow-lg p-4">
+      <div className="bg-gray-900 w-80 max-h-[75vh] rounded-xl overflow-y-auto shadow-lg p-4 relative">
 
-        <h2 className="text-xl font-semibold text-white mb-4 text-center">
-          Followers
-        </h2>
-
-        {/* Close Button */}
+        {/* Close */}
         <button
           onClick={onClose}
           className="absolute top-3 right-3 text-gray-400 hover:text-white"
@@ -38,14 +35,16 @@ const FollowersModal = ({ username, isOpen, onClose }) => {
           ✕
         </button>
 
-        {/* Followers List */}
+        <h2 className="text-xl font-semibold text-white mb-4 text-center">
+          Followers
+        </h2>
+
         {followers.length === 0 ? (
           <p className="text-gray-400 text-center">No followers yet</p>
         ) : (
-          followers.map((id) => (
-            <UserListItem key={id} user={{ username: "loading", avatar: "", bio: "" }} />
-          ))
+          followers.map((u) => <UserListItem key={u._id} user={u} />)
         )}
+
       </div>
     </div>
   );

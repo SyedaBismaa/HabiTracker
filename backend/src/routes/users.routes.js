@@ -8,6 +8,8 @@ const { updateProfile ,
    getPublicProfile , 
    followUser,
    unfollowUser,
+   getFollowersList,
+   getFollowingList,
    checkFollowStatus } = require("../controllers/user.controller");
 
 
@@ -18,6 +20,8 @@ router.post("/follow/:username", auth, followUser);
 router.post("/unfollow/:username", auth, unfollowUser);
 router.get("/check-follow/:username", auth, checkFollowStatus);
 
+router.get("/followers/:username", getFollowersList);
+router.get("/following/:username", getFollowingList);
 
 
 module.exports = router;
