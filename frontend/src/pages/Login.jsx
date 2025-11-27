@@ -32,7 +32,8 @@ const Login = () => {
       
       if (response.status === 200) {
         // Store user data in localStorage
-        localStorage.setItem('user', JSON.stringify(response.data.user));
+       localStorage.setItem("user", JSON.stringify(response.data.user));
+
         // Redirect to home page
         navigate('/');
       }

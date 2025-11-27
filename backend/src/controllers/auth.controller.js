@@ -53,52 +53,51 @@ async function registerUser(req, res) {
   }
 };
 
-async function loginUser(req,res) {
-     try {
+// Login Controller
+// Login Controller
+async function loginUser(req, res) {
+  try {
     const { email, password } = req.body;
 
-    const isUserExist = await userModel.findOne({ email });
-    if (!isUserExist) {
-      return res.status(400).json({
-        message: "User Not Found",
-      });
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    // compare hashed password
-    const validPass = await bcrypt.compare(password, isUserExist.password);
-    if (!validPass) {
-      return res.status(400).json({
-        message: "Invalid Password",
-      });
+    // Check password
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "Invalid credentials" });
     }
 
+    // Create token (correct way)
     const token = jwt.sign(
-      { id: isUserExist._id },
+      { id: user._id },
       process.env.JWT_SECRET,
       { expiresIn: "7d" }
     );
 
+    // Set cookie
     res.cookie("token", token, {
       httpOnly: true,
       sameSite: "strict",
       secure: process.env.NODE_ENV === "production",
     });
 
-    res.status(200).json({
-      message: "User Logged In Successfully",
-      user: {
-        username: isUserExist.username,
-        email: isUserExist.email,
-        id: isUserExist._id,
-      },
+    // Return FULL user data
+    const fullUser = await userModel
+      .findById(user._id)
+      .select("-password");
+
+    res.json({
+      message: "Login successful",
+      user: fullUser,
     });
+
   } catch (error) {
-    res.status(500).json({
-      message: "Server Error",
-      error: error.message,
-    });
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
-    
 }
 
 

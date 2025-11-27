@@ -69,5 +69,101 @@ async function getPublicProfile(req, res) {
     return res.status(500).json({ message: "Server Error" });
   }
 }
+async function followUser(req, res) {
+  try {
+    const followerId = req.user.id; // logged in user
+    const { username } = req.params;
 
-module.exports = { updateProfile, getPublicProfile };
+    const targetUser = await userModel.findOne({ username });
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Cannot follow yourself
+    if (targetUser._id.toString() === followerId) {
+      return res.status(400).json({ message: "You cannot follow yourself" });
+    }
+
+    // Already following?
+    if (targetUser.followers.includes(followerId)) {
+      return res.status(400).json({ message: "Already following" });
+    }
+
+    // Add follower
+    targetUser.followers.push(followerId);
+
+    // Add following to current user
+    await userModel.findByIdAndUpdate(followerId, {
+      $push: { following: targetUser._id }
+    });
+
+    await targetUser.save();
+
+    res.json({ message: "Followed successfully" });
+
+  } catch (error) {
+    console.error("Follow Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+async function unfollowUser(req, res) {
+  try {
+    const followerId = req.user.id;
+    const { username } = req.params;
+
+    const targetUser = await userModel.findOne({ username });
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!targetUser.followers.includes(followerId)) {
+      return res.status(400).json({ message: "You are not following this user" });
+    }
+
+    // Remove from followers
+    targetUser.followers.pull(followerId);
+
+    // Remove from following
+    await userModel.findByIdAndUpdate(followerId, {
+      $pull: { following: targetUser._id }
+    });
+
+    await targetUser.save();
+
+    res.json({ message: "Unfollowed successfully" });
+
+  } catch (error) {
+    console.error("Unfollow Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+async function checkFollowStatus(req, res) {
+  try {
+    const currentUserId = req.user.id;
+    const { username } = req.params;
+
+    const targetUser = await userModel.findOne({ username });
+
+    if (!targetUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const following = targetUser.followers.includes(currentUserId);
+
+    res.json({ following });
+
+  } catch (error) {
+    console.error("Check Follow Error:", error);
+    res.status(500).json({ message: "Server Error" });
+  }
+}
+
+module.exports = {
+ updateProfile,
+  getPublicProfile,
+  followUser,
+  unfollowUser,
+  checkFollowStatus
+  };
