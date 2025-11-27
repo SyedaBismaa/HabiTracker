@@ -32,7 +32,14 @@ const userSchema = new mongoose.Schema({
     xp:{
         type:Number,
         default:0
-    }
+    },
+    posts: [
+  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Post",
+  },
+],
+
 })
 
 const userModel = mongoose.model("userModel",userSchema);
