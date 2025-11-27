@@ -14,6 +14,7 @@ import Posts from "./pages/Posts";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PublicProfile from "./pages/PublicProfile";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -27,6 +28,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/:username" element={<PublicProfile/>} />
       <Route path="/journals" element={<Journals />} />
       <Route path="/journals/:id" element={<JournalDetails />} />
       <Route path="/leaderboard" element={<LeaderBoard />} />

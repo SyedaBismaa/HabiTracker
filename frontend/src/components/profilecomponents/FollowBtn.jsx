@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-const FollowButton = ({ username }) => {
+const FollowButton = ({ username, onFollowUpdate }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [loading, setLoading] = useState(true);
 
   const currentUser = JSON.parse(localStorage.getItem("user"));
 
-  // ---------------------------
   // Fetch follow state on load
-  // ---------------------------
   useEffect(() => {
     const checkFollowStatus = async () => {
       try {
@@ -32,9 +30,8 @@ const FollowButton = ({ username }) => {
     }
   }, [username]);
 
-  // ---------------------------
   // Follow / Unfollow
-  // ---------------------------
+
   const toggleFollow = async () => {
     try {
       setIsFollowing(!isFollowing); // Optimistic UI
@@ -43,16 +40,20 @@ const FollowButton = ({ username }) => {
         ? `http://localhost:3000/users/unfollow/${username}`
         : `http://localhost:3000/users/follow/${username}`;
 
-      await axios.post(url, {}, { withCredentials: true });
+      const res = await axios.post(url, {}, { withCredentials: true });
+
+      if (onFollowUpdate) {
+        onFollowUpdate(res.data.user);
+      }
+
     } catch (error) {
       console.error("Follow/unfollow error:", error);
-      setIsFollowing(isFollowing); // Revert if failure
+      setIsFollowing(isFollowing); // revert if failed
     }
   };
 
-  // ---------------------------
   // Loading State
-  // ---------------------------
+
   if (loading) {
     return (
       <button className="px-4 py-2 bg-gray-700 rounded-xl animate-pulse">
@@ -61,17 +62,14 @@ const FollowButton = ({ username }) => {
     );
   }
 
-  // ---------------------------
-  // Hide Follow button on own profile
-  // ---------------------------
+
   if (currentUser?.username === username) return null;
 
   return (
     <button
       onClick={toggleFollow}
       className={`px-4 py-2 rounded-xl transition 
-        ${isFollowing ? "bg-gray-700 hover:bg-gray-600" : "bg-indigo-600 hover:bg-indigo-700"}
-      `}
+        ${isFollowing ? "bg-gray-700 hover:bg-gray-600" : "bg-indigo-600 hover:bg-indigo-700"}`}
     >
       {isFollowing ? "Following" : "Follow"}
     </button>

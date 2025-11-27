@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Heart, Trash2, MessageCircle } from "lucide-react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const PostCard = ({ post, onDelete }) => {
   const loggedUser = JSON.parse(localStorage.getItem("user"));
@@ -30,12 +31,10 @@ const PostCard = ({ post, onDelete }) => {
 
   // DELETE POST
   const handleDeletePost = async () => {
-
     try {
-      await axios.delete(
-        `http://localhost:3000/posts/delete/${post._id}`,
-        { withCredentials: true }
-      );
+      await axios.delete(`http://localhost:3000/posts/delete/${post._id}`, {
+        withCredentials: true,
+      });
 
       toast.success("Post deleted!");
       onDelete && onDelete(post._id);
@@ -63,7 +62,7 @@ const PostCard = ({ post, onDelete }) => {
     }
   };
 
-
+  // DELETE COMMENT
   const handleDeleteComment = async (commentId) => {
     try {
       const res = await axios.delete(
@@ -85,16 +84,25 @@ const PostCard = ({ post, onDelete }) => {
 
       {/* HEADER */}
       <div className="flex items-center mb-3">
-        <img
-          src={post.user?.avatar}
-          className="w-10 h-10 rounded-full border object-cover"
-        />
 
+        {/* Avatar → Public Profile */}
+        <Link to={`/profile/${post.user?.username}`}>
+          <img
+            src={post.user?.avatar}
+            className="w-10 h-10 rounded-full border object-cover cursor-pointer"
+            alt="avatar"
+          />
+        </Link>
+
+        {/* Username + Time */}
         <div className="ml-3 flex-1">
-          <p className="font-semibold">{post.user?.username}</p>
-          <p className="text-xs text-gray-500">
-            {formatTime(post.createdAt)}
-          </p>
+          <Link to={`/profile/${post.user?.username}`}>
+            <p className="font-semibold cursor-pointer">
+              {post.user?.username}
+            </p>
+          </Link>
+
+          <p className="text-xs text-gray-500">{formatTime(post.createdAt)}</p>
         </div>
 
         {/* DELETE POST */}
@@ -111,21 +119,30 @@ const PostCard = ({ post, onDelete }) => {
       {/* CONTENT */}
       <p className="mb-3">{post.content}</p>
 
+      {/* IMAGE */}
       {post.image && (
-        <img src={post.image} className="w-full rounded-xl mb-3 border" />
+        <img
+          src={post.image}
+          className="w-full rounded-xl mb-3 border"
+          alt="post-image"
+        />
       )}
 
-      {/* LIKE + COMMENTS */}
+      {/* LIKE + COMMENT BAR */}
       <div className="flex items-center gap-3 mb-3">
+
+        {/* LIKE BUTTON */}
         <button
           onClick={handleLike}
-          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg
-          ${liked ? "bg-red-500 text-white" : "bg-gray-200 dark:bg-gray-700"}`}
+          className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${
+            liked ? "bg-red-500 text-white" : "bg-gray-200 dark:bg-gray-700"
+          }`}
         >
           <Heart size={18} fill={liked ? "white" : "none"} />
           {likes}
         </button>
 
+        {/* COMMENTS COUNT */}
         <div className="flex items-center gap-1">
           <MessageCircle size={18} />
           {comments.length}
@@ -141,6 +158,7 @@ const PostCard = ({ post, onDelete }) => {
           onChange={(e) => setCommentText(e.target.value)}
           className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg"
         />
+
         <button
           onClick={handleComment}
           className="px-3 py-1 bg-indigo-600 text-white rounded-lg"
@@ -152,13 +170,10 @@ const PostCard = ({ post, onDelete }) => {
       {/* COMMENT LIST */}
       <div className="mt-3 space-y-2 max-h-40 overflow-y-auto pr-2">
         {comments.map((c) => {
-          
           const canDelete =
             c.user?.toString() === userId ||
             c.user === userId ||
             post.user?._id?.toString() === userId;
-
-          console.log("🟢 Can Delete Comment:", canDelete);
 
           return (
             <div

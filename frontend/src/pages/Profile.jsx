@@ -105,6 +105,7 @@ const fetchUserPosts = async (userId) => {
         {/* Profile Stats */}
         <ProfileStats
           user={user}
+          postCount={posts.length} 
           onFollowersClick={() => setFollowersOpen(true)}
           onFollowingClick={() => setFollowingOpen(true)}
         />

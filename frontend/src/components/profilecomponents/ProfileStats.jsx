@@ -1,6 +1,6 @@
 import React from "react";
 
-const ProfileStats = ({ user, onFollowersClick, onFollowingClick }) => {
+const ProfileStats = ({ user, onFollowersClick, onFollowingClick, postCount }) => {
   return (
     <div className="w-full max-w-2xl mt-6 flex justify-center">
       <div className="flex gap-10 text-center">
@@ -29,10 +29,11 @@ const ProfileStats = ({ user, onFollowersClick, onFollowingClick }) => {
 
         {/* Posts */}
         <div>
-          <p className="text-lg font-semibold text-white">
-            {user?.posts?.length || 0}
-          </p>
-          <p className="text-gray-400 text-sm">Posts</p>
+         <p className="text-lg font-semibold text-white">
+   {postCount ?? user?.posts?.length ?? 0}
+</p>
+<p className="text-gray-400 text-sm">Posts</p>
+
         </div>
 
       </div>
