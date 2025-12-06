@@ -9,6 +9,8 @@ const habitsRoutes = require("./routes/habit.routes")
 const habitlogRoutes = require("./routes/habitLog.routes")
 const usersRoutes = require("./routes/users.routes")
 const PostsRoutes = require("./routes/posts.route");
+const leaderboard = require("./routes/leaderboard.routes")
+
 
 const app = express()
 app.use(express.json())
@@ -28,6 +30,6 @@ app.use("/habits", habitsRoutes);
 app.use("/habitlog", habitlogRoutes);
 app.use("/users", usersRoutes)
 app.use("/posts", PostsRoutes);
-
+app.use("/leaderboard", leaderboard)
 
 module.exports=app;
