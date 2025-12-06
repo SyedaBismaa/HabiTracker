@@ -46,7 +46,7 @@ const getLeaderboard = async (req, res) => {
   { $unwind: "$user" },
   {
     $project: {
-      _id: 0,
+         _id: "$user._id",
       username: "$user.username",
       avatar: "$user.avatar",
       totalLikes: 1
