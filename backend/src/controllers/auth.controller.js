@@ -101,6 +101,22 @@ async function loginUser(req, res) {
 }
 
 
+async function getUserMe(req, res) {
+  try {
+    const user = await userModel
+      .findById(req.user.id)
+      .select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User Not Found" });
+    }
+
+    res.json({ user });
+
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+}
 
 
 async function getUser(req,res) {
@@ -148,5 +164,6 @@ module.exports={
     registerUser,
     loginUser,
     getUser,
-    logoutUser
+    logoutUser,
+    getUserMe
 }

@@ -1,35 +1,49 @@
 const cookieParser = require('cookie-parser');
-const express = require('express')
-const authRoutes = require("./routes/auth.routes")
-const cors = require("cors")
-const todoRoutes = require("./routes/todo.routes")
-const streakRoutes = require("./routes/streak.routes")
-const journalRoutes = require("./routes/journal.routes")
-const habitsRoutes = require("./routes/habit.routes")
-const habitlogRoutes = require("./routes/habitLog.routes")
-const usersRoutes = require("./routes/users.routes")
+const express = require('express');
+
+const authRoutes = require("./routes/auth.routes");
+const cors = require("cors");
+const todoRoutes = require("./routes/todo.routes");
+const streakRoutes = require("./routes/streak.routes");
+const journalRoutes = require("./routes/journal.routes");
+const habitsRoutes = require("./routes/habit.routes");
+const habitlogRoutes = require("./routes/habitLog.routes");
+const usersRoutes = require("./routes/users.routes");
 const PostsRoutes = require("./routes/posts.route");
-const leaderboard = require("./routes/leaderboard.routes")
+const leaderboardRoutes = require("./routes/leaderboard.routes");
 
+const passport = require("passport");
+require("./service/googleAuth"); // Load Google strategy
 
-const app = express()
-app.use(express.json())
-app.use(cookieParser())
+const app = express();
+
+// ----------------------
+// Middlewares
+// ----------------------
+app.use(express.json());
+app.use(cookieParser());
+
 app.use(cors({
   origin: "http://localhost:5173",
   credentials: true
 }));
 
+app.use(passport.initialize());
 
-
-app.use("/auth" , authRoutes)
+// ----------------------
+// Routes
+// ----------------------
+app.use("/auth", authRoutes); // Includes Google OAuth as well
 app.use("/todos", todoRoutes);
 app.use("/streak", streakRoutes);
-app.use("/journals",journalRoutes);
+app.use("/journals", journalRoutes);
 app.use("/habits", habitsRoutes);
 app.use("/habitlog", habitlogRoutes);
-app.use("/users", usersRoutes)
+app.use("/users", usersRoutes);
 app.use("/posts", PostsRoutes);
-app.use("/leaderboard", leaderboard)
+app.use("/leaderboard", leaderboardRoutes);
 
-module.exports=app;
+// ----------------------
+// Export App
+// ----------------------
+module.exports = app;

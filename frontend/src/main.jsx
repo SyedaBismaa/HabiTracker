@@ -14,12 +14,15 @@ import Posts from "./pages/Posts";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
+// ⭐⭐ IMPORTANT — THIS LINE WAS MISSING ⭐⭐
+import "./index.css";
+
 import PublicProfile from "./pages/PublicProfile";
+import OAuthSuccess from "./pages/OAuthSuccess";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-
-    {/* ToastContainer must be HERE */}
     <ToastContainer position="top-right" theme="dark" />
 
     <Routes>
@@ -34,6 +37,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/leaderboard" element={<LeaderBoard />} />
       <Route path="/habits" element={<HabitPage />} />
       <Route path="/posts" element={<Posts />} />
+      <Route path="/oauth-success" element={<OAuthSuccess />} />
     </Routes>
   </BrowserRouter>
 );
