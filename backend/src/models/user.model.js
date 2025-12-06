@@ -39,6 +39,14 @@ const userSchema = new mongoose.Schema({
     ref: "Post",
   },
 ],
+lastActiveDate: {
+     type: Date,
+      default: null
+     },
+streak: {
+     type: Number, 
+     default: 0 
+    },
 
 })
 
