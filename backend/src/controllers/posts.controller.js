@@ -79,10 +79,16 @@ async function likePost(req,res){
 
 async function getAllPosts(req, res) {
   try {
+    const page = Number(req.query.page) || 1; // frontend will send ?page=1,2,3
+    const limit = 10; // posts per page
+    const skip = (page - 1) * limit;
+
     const posts = await postModel
       .find()
       .populate("user", "username avatar")
-      .sort({ likes: -1 }); // descending
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
 
     res.json({ posts });
 
@@ -90,6 +96,8 @@ async function getAllPosts(req, res) {
     res.status(500).json({ message: "Error", error: error.message });
   }
 }
+
+
 
 
 async function getUserPosts(req, res) {
