@@ -11,7 +11,7 @@ const habitlogRoutes = require("./routes/habitLog.routes");
 const usersRoutes = require("./routes/users.routes");
 const PostsRoutes = require("./routes/posts.route");
 const leaderboardRoutes = require("./routes/leaderboard.routes");
-
+const chatRoutes = require('./routes/chat.routes');
 const passport = require("passport");
 require("./service/googleAuth"); // Load Google strategy
 
@@ -42,6 +42,8 @@ app.use("/habitlog", habitlogRoutes);
 app.use("/users", usersRoutes);
 app.use("/posts", PostsRoutes);
 app.use("/leaderboard", leaderboardRoutes);
+app.use('/api/ai', chatRoutes);
+
 
 // ----------------------
 // Export App
