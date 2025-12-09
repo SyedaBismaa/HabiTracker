@@ -28,6 +28,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { name: "Register", path: "/register", icon: <LogIn size={20} /> },
     { name: "Login", path: "/login", icon: <LogIn size={20} /> },
     { name: "Logout", path: "/logout", icon: <LogOut size={20} /> },
+    { name: "Chat", path: "/chat", icon: <HeartHandshake size={20} /> },
   ];
 
   return (

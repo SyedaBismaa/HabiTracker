@@ -20,6 +20,7 @@ import "./index.css";
 
 import PublicProfile from "./pages/PublicProfile";
 import OAuthSuccess from "./pages/OAuthSuccess";
+import ChatPage from "./pages/ChatPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
@@ -38,6 +39,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Route path="/habits" element={<HabitPage />} />
       <Route path="/posts" element={<Posts />} />
       <Route path="/oauth-success" element={<OAuthSuccess />} />
+      <Route path="/chat" element={<ChatPage />} />
     </Routes>
   </BrowserRouter>
 );
