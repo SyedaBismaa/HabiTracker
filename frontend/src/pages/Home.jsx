@@ -1,106 +1,142 @@
 import React from "react";
 import DashboardLayout from "../layout/DashboardLayout";
+import {
+  Flame,
+  Calendar,
+  CheckCircle,
+  BarChart3,
+  Sparkles,
+  Users,
+  NotebookText,
+  MessageCircle,
+  ListTodo,
+  HeartHandshake
+} from "lucide-react";
 
 const Home = () => {
   return (
-    <div className="flex min-h-screen bg-gray-900 text-white">
-      {/* Sidebar / Navbar */}
-      <DashboardLayout />
+    <DashboardLayout>
+      <div className="flex-1 p-6 min-h-screen bg-gray-900 text-white space-y-10">
 
-      {/* MAIN CONTENT */}
-      <div className="flex-1 p-6 space-y-6 overflow-y-auto">
-
-        {/* ===== HEADER ===== */}
-        <div>
-          <h1 className="text-3xl font-bold mb-1">Habit Overview</h1>
-          <p className="text-gray-300 text-sm">Your weekly & monthly habit performance</p>
+        {/* ================= HEADER ================= */}
+        <div className="bg-gradient-to-r from-indigo-600/30 to-purple-600/20 p-6 rounded-2xl border border-gray-800 shadow-lg">
+          <h1 className="text-3xl font-bold">Welcome Back 👋</h1>
+          <p className="text-gray-300 mt-1">
+            Track your habits, stay consistent, achieve your goals, and grow daily.
+          </p>
         </div>
 
-        {/* ===== TOP STATS CARDS ===== */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Weekly Completion */}
-          <div className="bg-gray-800 p-4 rounded-xl shadow">
-            <h3 className="font-medium text-gray-300">Weekly Completion</h3>
-            <div className="text-4xl font-bold mt-2">72%</div>
-            <div className="w-full bg-gray-700 h-2 rounded mt-3">
-              <div className="bg-green-500 h-2 w-[72%] rounded"></div>
+        {/* ================= QUICK STATS ================= */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+
+          <div className="p-5 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-indigo-500/10 transition">
+            <div className="flex items-center gap-3">
+              <Flame className="text-orange-400" size={26} />
+              <h3 className="text-lg font-semibold">Daily Streak</h3>
             </div>
+            <p className="text-4xl font-bold mt-3">14🔥</p>
           </div>
 
-          {/* Active Habits */}
-          <div className="bg-gray-800 p-4 rounded-xl shadow">
-            <h3 className="font-medium text-gray-300">Active Habits</h3>
-            <div className="text-4xl font-bold mt-2">6</div>
+          <div className="p-5 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-green-500/10 transition">
+            <div className="flex items-center gap-3">
+              <CheckCircle className="text-green-400" size={26} />
+              <h3 className="text-lg font-semibold">Completed</h3>
+            </div>
+            <p className="text-4xl font-bold mt-3">8 Tasks</p>
           </div>
 
-          {/* Longest Streak */}
-          <div className="bg-gray-800 p-4 rounded-xl shadow">
-            <h3 className="font-medium text-gray-300">Longest Streak</h3>
-            <div className="text-4xl font-bold mt-2">14 days</div>
+          <div className="p-5 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-blue-500/10 transition">
+            <div className="flex items-center gap-3">
+              <BarChart3 className="text-blue-400" size={26} />
+              <h3 className="text-lg font-semibold">Progress</h3>
+            </div>
+            <p className="text-4xl font-bold mt-3">72%</p>
+          </div>
+
+          <div className="p-5 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-purple-500/10 transition">
+            <div className="flex items-center gap-3">
+              <Sparkles className="text-purple-400" size={26} />
+              <h3 className="text-lg font-semibold">XP Earned</h3>
+            </div>
+            <p className="text-4xl font-bold mt-3">245 XP</p>
+          </div>
+
+        </div>
+
+        {/* ================= FEATURE HIGHLIGHTS ================= */}
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Explore Your Tools</h2>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-indigo-500/10 transition">
+              <ListTodo size={28} className="text-indigo-400" />
+              <h3 className="font-semibold text-lg mt-4">Smart Todo Manager</h3>
+              <p className="text-gray-400 mt-2">
+                Add tasks, mark completion, and stay organised every day.
+              </p>
+            </div>
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-green-500/10 transition">
+              <HeartHandshake size={28} className="text-green-400" />
+              <h3 className="font-semibold text-lg mt-4">Habit Tracking</h3>
+              <p className="text-gray-400 mt-2">
+                Build your habits with streaks, XP, and daily logs.
+              </p>
+            </div>
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-pink-500/10 transition">
+              <NotebookText size={28} className="text-pink-400" />
+              <h3 className="font-semibold text-lg mt-4">Daily Journaling</h3>
+              <p className="text-gray-400 mt-2">
+                Reflect your thoughts, save images, and track personal growth.
+              </p>
+            </div>
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-yellow-500/10 transition">
+              <Users size={28} className="text-yellow-400" />
+              <h3 className="font-semibold text-lg mt-4">Community Posts</h3>
+              <p className="text-gray-400 mt-2">
+                Share your wins, interact, inspire others & grow together.
+              </p>
+            </div>
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-red-500/10 transition">
+              <MessageCircle size={28} className="text-red-400" />
+              <h3 className="font-semibold text-lg mt-4">HabitBuddy AI</h3>
+              <p className="text-gray-400 mt-2">
+                Your personal AI habit coach guiding you every day.
+              </p>
+            </div>
+
+            <div className="p-6 bg-gray-800 rounded-2xl border border-gray-700 shadow hover:shadow-blue-400/10 transition">
+              <Calendar size={28} className="text-blue-400" />
+              <h3 className="font-semibold text-lg mt-4">Calendar Tracking</h3>
+              <p className="text-gray-400 mt-2">
+                Visualise progress across the month with clean habit logs.
+              </p>
+            </div>
+
           </div>
         </div>
 
-        {/* ===== CIRCLE PROGRESS SECTION ===== */}
-        <div className="bg-gray-800 p-6 rounded-xl shadow w-full flex flex-col sm:flex-row items-center justify-between">
-          <div className="flex flex-col gap-2 mb-6 sm:mb-0">
-            <h2 className="text-xl font-semibold">Monthly Goal Progress</h2>
-            <p className="text-gray-400 text-sm">You're improving this month, keep going!</p>
-          </div>
+        {/* ================= WEEKLY CHART ================= */}
+        <div className="bg-gray-800 p-6 rounded-2xl border border-gray-700 shadow">
+          <h2 className="text-xl font-semibold">Weekly Habit Breakdown</h2>
+          <p className="text-gray-400 mb-6 text-sm">
+            See how your habits performed this week.
+          </p>
 
-          <div className="relative w-40 h-40">
-            <svg className="w-full h-full rotate-[-90deg]">
-              <circle cx="80" cy="80" r="70" stroke="#374151" strokeWidth="12" fill="none" />
-              <circle
-                cx="80"
-                cy="80"
-                r="70"
-                stroke="#10B981"
-                strokeWidth="12"
-                fill="none"
-                strokeDasharray={440}
-                strokeDashoffset={440 - (440 * 68) / 100}
-                strokeLinecap="round"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center font-bold text-2xl">68%</div>
-          </div>
-        </div>
-
-        {/* ===== HABIT CALENDAR SECTION ===== */}
-        <div className="bg-gray-800 p-6 rounded-xl shadow">
-          <h2 className="text-xl font-semibold mb-4">Habit Calendar</h2>
-          <p className="text-gray-400 text-sm mb-3">Track day-by-day performance</p>
-
-          {/* Week Days */}
-          <div className="grid grid-cols-7 gap-2 text-center text-gray-300 mb-2">
-            <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
-          </div>
-
-          {/* Days Box */}
-          <div className="grid grid-cols-7 gap-2">
-            {Array.from({ length: 30 }).map((_, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+            {["Week 1", "Week 2", "Week 3"].map((week) => (
               <div
-                key={i}
-                className={`w-10 h-10 rounded-lg border border-gray-700 flex items-center justify-center cursor-pointer hover:bg-gray-700 ${
-                  i % 3 === 0 ? "bg-green-600" : "bg-gray-900"
-                }`}
+                key={week}
+                className="p-5 rounded-lg bg-gray-900 border border-gray-700 shadow"
               >
-                {i + 1}
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* ===== WEEKLY BREAKDOWN ===== */}
-        <div className="bg-gray-800 p-6 rounded-xl shadow">
-          <h2 className="text-xl font-semibold mb-3">Weekly Breakdown</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {['Week 1', 'Week 2', 'Week 3'].map((week) => (
-              <div key={week} className="p-4 bg-gray-900 rounded-lg shadow space-y-2">
                 <h3 className="font-medium">{week}</h3>
-                <p className="text-gray-400 text-sm">Completion: 60%</p>
-                <div className="w-full bg-gray-700 h-2 rounded">
-                  <div className="bg-blue-500 h-2 w-[60%] rounded"></div>
+                <p className="text-gray-400 text-sm mb-2">Completion: 60%</p>
+                <div className="w-full h-2 bg-gray-700 rounded">
+                  <div className="bg-indigo-500 h-2 w-[60%] rounded"></div>
                 </div>
               </div>
             ))}
@@ -108,7 +144,7 @@ const Home = () => {
         </div>
 
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

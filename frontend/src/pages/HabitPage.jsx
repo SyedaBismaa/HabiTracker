@@ -155,9 +155,7 @@ const HabitPage = () => {
   });
 
   return (
-    <div className="flex min-h-screen bg-gray-900 text-white">
-      <DashboardLayout />
-
+    <DashboardLayout>
       <div className="flex-1 p-6">
         <HabitHeader onOpenAddModal={() => setOpenModal(true)} />
 
@@ -194,7 +192,7 @@ const HabitPage = () => {
 
         <AddHabitModal open={openModal} onAdd={addHabit} onClose={() => setOpenModal(false)} />
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

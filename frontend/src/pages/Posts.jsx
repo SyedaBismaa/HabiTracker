@@ -8,10 +8,8 @@ const Posts = () => {
   const refreshFeed = () => setRefresh(!refresh);
 
   return (
-    <div className="flex bg-gray-900 text-white min-h-screen">
-      <DashboardLayout />
+    <DashboardLayout>
 
-      {/* Main Feed Area */}
       <div className="flex-1 p-4">
         
         <h1 className="text-3xl font-bold mb-2">Community Posts</h1>
@@ -27,7 +25,7 @@ const Posts = () => {
           <PostFeed refresh={refresh} />
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 };
 

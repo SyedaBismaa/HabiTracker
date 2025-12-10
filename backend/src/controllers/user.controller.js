@@ -49,7 +49,7 @@ async function getPublicProfile(req, res) {
 
     const user = await userModel
       .findOne({ username })
-      .select("username avatar bio followers following xp posts")
+      .select("username avatar bio followers following xp posts streak")
       .populate({
         path: "posts",
         model: "postModel",
@@ -69,6 +69,7 @@ async function getPublicProfile(req, res) {
     return res.status(500).json({ message: "Server Error" });
   }
 }
+
 async function followUser(req, res) {
   try {
     const followerId = req.user.id; // logged in user

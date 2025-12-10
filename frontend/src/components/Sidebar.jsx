@@ -12,23 +12,28 @@ import {
   X,
   LogIn,
   LogOut,
+  MessageCircle,
+  UserPlus,
 } from "lucide-react";
 
-const Sidebar = ({ isOpen, setIsOpen }) => {
+const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
   const location = useLocation();
 
-  const links = [
+  // BASE LINKS — visible to all logged-in users
+  const privateLinks = [
     { name: "Home", path: "/", icon: <Home size={20} /> },
     { name: "Todo", path: "/todo", icon: <CheckSquare size={20} /> },
     { name: "Journals", path: "/journals", icon: <NotebookText size={20} /> },
     { name: "Habits", path: "/habits", icon: <HeartHandshake size={20} /> },
     { name: "Posts", path: "/posts", icon: <Edit3 size={20} /> },
     { name: "Leaderboard", path: "/leaderboard", icon: <Trophy size={20} /> },
-    { name: "Profile", path: "/profile", icon: <User size={20} /> }, // User’s own profile
-    { name: "Register", path: "/register", icon: <LogIn size={20} /> },
+    { name: "Profile", path: "/profile", icon: <User size={20} /> },
+  ];
+
+  // GUEST LINKS — only when NOT logged in
+  const guestLinks = [
     { name: "Login", path: "/login", icon: <LogIn size={20} /> },
-    { name: "Logout", path: "/logout", icon: <LogOut size={20} /> },
-    { name: "Chat", path: "/chat", icon: <HeartHandshake size={20} /> },
+    { name: "Register", path: "/register", icon: <UserPlus size={20} /> },
   ];
 
   return (
@@ -51,9 +56,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         {/* Logo */}
         <div className="flex items-center justify-center h-16 border-b border-gray-800">
           {isOpen ? (
-            <h1 className="text-lg font-semibold tracking-wide">
-              HabitTracker
-            </h1>
+            <h1 className="text-lg font-semibold tracking-wide">HabitTracker</h1>
           ) : (
             <h1 className="text-indigo-400 font-bold text-xl">H</h1>
           )}
@@ -61,36 +64,83 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
 
         {/* Navigation */}
         <nav className="flex-1 py-4 space-y-1 overflow-y-auto">
-          {links.map((link) => (
-            <Link
-              key={link.name}
-              to={link.path}
-              className={`group flex items-center rounded-lg transition-all duration-200 
-              px-4 py-3 mx-2 relative 
-              ${
-                location.pathname === link.path
-                  ? "bg-indigo-600 text-white"
-                  : "text-gray-300 hover:bg-gray-800"
-              }`}
+          {/* Logged-in user's links */}
+          {user &&
+            privateLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`group flex items-center rounded-lg transition-all duration-200 
+                px-4 py-3 mx-2 relative 
+                ${
+                  location.pathname === link.path
+                    ? "bg-indigo-600 text-white"
+                    : "text-gray-300 hover:bg-gray-800"
+                }`}
+              >
+                <div className="flex-shrink-0">{link.icon}</div>
+                {isOpen && <span className="ml-3 text-sm font-medium">{link.name}</span>}
+
+                {/* Tooltip when collapsed */}
+                {!isOpen && (
+                  <span
+                    className="absolute left-16 bg-gray-900 text-white text-xs font-medium 
+                    px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition 
+                    whitespace-nowrap pointer-events-none border border-gray-700"
+                  >
+                    {link.name}
+                  </span>
+                )}
+              </Link>
+            ))}
+
+          {/* Chat (Logged-in users only) */}
+          {user && (
+            <button
+              onClick={openAi}
+              className="group flex items-center rounded-lg transition-all duration-200 
+              px-4 py-3 mx-2 relative text-left w-full text-gray-300 hover:bg-gray-800"
             >
-              <div className="flex-shrink-0">{link.icon}</div>
+              <MessageCircle size={20} />
+              {isOpen && <span className="ml-3 text-sm font-medium">Chat</span>}
 
-              {isOpen && (
-                <span className="ml-3 text-sm font-medium">{link.name}</span>
-              )}
-
-              {/* Tooltip when collapsed */}
               {!isOpen && (
                 <span
                   className="absolute left-16 bg-gray-900 text-white text-xs font-medium 
-                  px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition 
+                  px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition
                   whitespace-nowrap pointer-events-none border border-gray-700"
                 >
-                  {link.name}
+                  Chat
                 </span>
               )}
-            </Link>
-          ))}
+            </button>
+          )}
+
+          {/* Login / Register (guest only) */}
+          {!user &&
+            guestLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`group flex items-center rounded-lg transition-all duration-200 
+                px-4 py-3 mx-2 relative text-gray-300 hover:bg-gray-800`}
+              >
+                {link.icon}
+                {isOpen && <span className="ml-3 text-sm font-medium">{link.name}</span>}
+              </Link>
+            ))}
+
+          {/* Logout (only when logged in) */}
+          {user && (
+            <button
+              onClick={logout}
+              className="group flex items-center rounded-lg transition-all duration-200 
+              px-4 py-3 mx-2 relative text-left w-full text-red-400 hover:bg-gray-800"
+            >
+              <LogOut size={20} />
+              {isOpen && <span className="ml-3 text-sm font-medium">Logout</span>}
+            </button>
+          )}
         </nav>
 
         {/* Footer */}
