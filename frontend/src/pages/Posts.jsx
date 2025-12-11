@@ -10,18 +10,12 @@ const Posts = () => {
   return (
     <DashboardLayout>
 
-      <div className="flex-1 p-4">
+      <div className="flex-1  min-w-full">
         
-        <h1 className="text-3xl font-bold mb-2">Community Posts</h1>
+        <h1 className="text-xl font-bold ">Community Posts</h1>
         <p className="text-gray-400 mb-6">Share your progress, habits, wins, and updates 🚀</p>
-
-        {/* FEED WRAPPER — WIDER WIDTH */}
-        <div className="max-w-3xl mx-auto">  
-          
-          {/* Create Post */}
+        <div className="max-w-5xl mx-auto ">  
           <CreatePost onPostCreated={refreshFeed} />
-
-          {/* Feed */}
           <PostFeed refresh={refresh} />
         </div>
       </div>

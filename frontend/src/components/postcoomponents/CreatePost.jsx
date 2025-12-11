@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import DashboardLayout from "../../layout/DashboardLayout";
 
 const CreatePost = ({ onPostCreated }) => {
   const [content, setContent] = useState("");
@@ -39,7 +40,8 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="bg-white  dark:bg-gray-900 shadow-md p-4 rounded-2xl mb-4 border border-gray-200 dark:border-gray-700">
+
+    <div className="bg-white dark:bg-gray-900 shadow-md p-1 rounded-2xl mb-4 border border-gray-200 dark:border-gray-700">
       
       {/* Input text */}
       <textarea
@@ -82,6 +84,7 @@ const CreatePost = ({ onPostCreated }) => {
         </button>
       </div>
     </div>
+
   );
 };
 
