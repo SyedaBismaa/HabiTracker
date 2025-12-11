@@ -34,7 +34,7 @@ const JournalDetails = () => {
   useEffect(() => {
     const delay = setTimeout(() => saveJournal(), 700);
     return () => clearTimeout(delay);
-  }, [title, content]);
+  }, [title, content , images]);
 
   const saveJournal = async () => {
     if (id === "new") {
@@ -65,9 +65,14 @@ const JournalDetails = () => {
       form,
       { withCredentials: true }
     );
+const updated = [...images, res.data.url];
+setImages(updated);
+await axios.put(`http://localhost:3000/journals/${id}`, {
+  title,
+  content,
+  images: updated,
+}, { withCredentials: true });
 
-    setImages([...images, res.data.url]);
-    await saveJournal();
   };
 
   const handleDeleteImage = async (index) => {
@@ -81,20 +86,21 @@ const JournalDetails = () => {
       <div className="w-full p-6">
 
         {/* Back Button */}
-        <button
+       
+
+        {/* Sticky Header */}
+        <div className="flex justify-between items-center sticky top-0 bg-gray-900 pb-3 pt-2 z-20 border-b border-gray-700">
+           <button
           onClick={() => navigate("/journals")}
           className="flex items-center gap-2 text-gray-300 hover:text-white mb-6"
         >
           <ArrowLeft size={20} /> Back to Journals
         </button>
-
-        {/* Sticky Header */}
-        <div className="flex justify-between items-center sticky top-0 bg-gray-900 pb-3 pt-2 z-20 border-b border-gray-700">
           <input
             placeholder="Journal Title..."
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="w-full text-3xl bg-transparent p-2 outline-none border-b border-gray-700 focus:border-indigo-500 transition"
+            className="w-1/2 mb-2 text-2xl bg-transparent p-2 outline-none border-b border-gray-700 focus:border-indigo-500 transition"
           />
 
           <label className="ml-4 border border-gray-600 rounded-lg px-4 py-2 cursor-pointer bg-gray-800 hover:bg-gray-700 transition">

@@ -22,13 +22,10 @@ const PublicProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        // LOG: public profile request
         const res = await axios.get(
           `http://localhost:3000/users/profile/${username}`,
           { withCredentials: true }
         );
-
-        console.log("LOG: public profile response →", res.data);
 
         setUserData(res.data.user);
 
@@ -36,8 +33,6 @@ const PublicProfile = () => {
           `http://localhost:3000/posts/user/${res.data.user._id}`,
           { withCredentials: true }
         );
-
-        console.log("LOG: public posts response →", p.data);
 
         setPosts(p.data.posts || []);
       } catch (err) {

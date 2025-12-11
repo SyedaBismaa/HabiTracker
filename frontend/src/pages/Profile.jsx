@@ -8,6 +8,7 @@ import FollowersModal from "../components/profilecomponents/FollowersModel";
 import FollowingModal from "../components/profilecomponents/FollowingModel";
 import UserPostsGrid from "../components/profilecomponents/UserPostGrid";
 import EditProfileModal from "../components/usercomponents/EditProfileModal";
+import { toast } from "react-toastify";
 
 const Profile = () => {
   const [user, setUser] = useState(null);
@@ -33,43 +34,37 @@ const Profile = () => {
 
   const updateStreak = async () => {
     try {
-      // LOG: updateStreak() request sent
       const res = await axios.post(
         "http://localhost:3000/streak/update",
         {},
         { withCredentials: true }
       );
-      // LOG: updateStreak() response
-      console.log("LOG: updateStreak response →", res.data);
     } catch (err) {
-      console.log("LOG: updateStreak error →", err);
+      toast.error("Error updating streak");
     }
   };
 
   const fetchStreaks = async () => {
     try {
-      // LOG: fetchStreaks() request sent
+      
       const res = await axios.get("http://localhost:3000/streak", {
         withCredentials: true,
       });
-      console.log("LOG: fetchStreaks response →", res.data);
       setStreak(res.data.streak ?? 0);
     } catch (err) {
-      console.log("LOG: fetchStreaks error →", err);
+      toast.error("Error fetching streak please refresh the page");
     }
   };
 
   const fetchUserPosts = async (userId) => {
     try {
-      // LOG: fetching posts
       const res = await axios.get(
         `http://localhost:3000/posts/user/${userId}`,
         { withCredentials: true }
       );
-      console.log("LOG: posts response →", res.data);
       setPosts(res.data.posts || []);
     } catch (e) {
-      console.log("LOG: posts error →", e);
+      toast.error("Error fetching user posts");
     } finally {
       setLoading(false);
     }
