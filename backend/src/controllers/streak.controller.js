@@ -1,69 +1,69 @@
-const Todo = require("../models/todo.model");
 const userModel = require("../models/user.model");
 
-// OLD STREAK BASED ON TODOS (keep only if needed)
-const getStreak = async (req, res) => {
-  const todos = await Todo.find({ userId: req.userId }).sort({ date: 1 });
-
-  let streak = 0;
-  let prevDate = null;
-
-  todos.forEach((todo) => {
-    if (todo.completed) {
-      const currDate = new Date(todo.date).setHours(0, 0, 0, 0);
-      if (!prevDate) {
-        streak = 1;
-      } else if (currDate - prevDate === 86400000) {
-        streak++;
-      } else if (currDate !== prevDate) {
-        streak = 1;
-      }
-      prevDate = currDate;
-    }
-  });
-
-  res.status(200).json({ streak });
-};
-
-
-// NEW GLOBAL STREAK HANDLER
+// ---------- UPDATE STREAK ----------
 const updateStreak = async (req, res) => {
   try {
-    const userId = req.user.id;
+    const userId = req.userId; 
     const user = await userModel.findById(userId);
 
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Normalize today to UTC midnight
+    const now = new Date();
+    const today = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 
     let streak = user.streak || 0;
 
- 
     if (!user.lastActiveDate) {
+      // First time
       streak = 1;
     } else {
       const last = new Date(user.lastActiveDate);
-      last.setHours(0, 0, 0, 0);
+      const normalizedLast = new Date(Date.UTC(last.getUTCFullYear(), last.getUTCMonth(), last.getUTCDate()));
 
-      const diff = today - last;
+      const diff = today - normalizedLast;
+      const ONE_DAY = 86400000;
 
       if (diff === 0) {
+        // Same day → do nothing
         streak = user.streak;
-      } else if (diff === 86400000) {
-        streak = user.streak + 1;
+      } else if (diff === ONE_DAY) {
+        // Consecutive day → increase streak
+        streak = (user.streak || 0) + 1;
       } else {
+        // Missed → reset
         streak = 1;
       }
     }
 
     user.streak = streak;
     user.lastActiveDate = today;
-
     await user.save();
 
-    res.json({ message: "Streak Updated", streak });
+    return res.json({ message: "Streak updated", streak });
   } catch (err) {
-    res.status(500).json({ message: "Error updating streak", error: err.message });
+    return res.status(500).json({ message: "Error updating streak", error: err.message });
   }
 };
 
-module.exports = { getStreak, updateStreak };
+// ---------- GET CURRENT STREAK ----------
+const getStreak = async (req, res) => {
+  try {
+    const user = await userModel.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    return res.json({
+      streak: user.streak || 0,
+      lastActiveDate: user.lastActiveDate
+    });
+  } catch (err) {
+    return res.status(500).json({ message: "Error fetching streak", error: err.message });
+  }
+};
+
+module.exports = { updateStreak, getStreak };

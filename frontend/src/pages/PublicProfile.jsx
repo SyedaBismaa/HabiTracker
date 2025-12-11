@@ -22,21 +22,26 @@ const PublicProfile = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        // LOG: public profile request
         const res = await axios.get(
           `http://localhost:3000/users/profile/${username}`,
           { withCredentials: true }
         );
 
+        console.log("LOG: public profile response →", res.data);
+
         setUserData(res.data.user);
 
-        // Posts
         const p = await axios.get(
           `http://localhost:3000/posts/user/${res.data.user._id}`,
           { withCredentials: true }
         );
+
+        console.log("LOG: public posts response →", p.data);
+
         setPosts(p.data.posts || []);
       } catch (err) {
-        console.error("Public profile error:", err);
+        console.log("LOG: public profile error →", err);
       } finally {
         setLoading(false);
       }
@@ -69,13 +74,11 @@ const PublicProfile = () => {
     <DashboardLayout>
       <div className="min-h-screen bg-gray-900 text-white px-4 py-6 flex flex-col items-center">
 
-        {/* HEADER */}
         <PublicProfileHeader 
           user={userData}
           onFollowUpdate={(updatedUser) => setUserData(updatedUser)}
         />
 
-        {/* STATS */}
         <ProfileStats
           user={userData}
           postCount={posts.length}
@@ -83,17 +86,14 @@ const PublicProfile = () => {
           onFollowingClick={() => setFollowingOpen(true)}
         />
 
-        {/* POSTS */}
         <UserPostsGrid posts={posts} />
 
-        {/* FOLLOWERS MODAL */}
         <FollowersModal
           username={username}
           isOpen={followersOpen}
           onClose={() => setFollowersOpen(false)}
         />
 
-        {/* FOLLOWING MODAL */}
         <FollowingModal
           username={username}
           isOpen={followingOpen}

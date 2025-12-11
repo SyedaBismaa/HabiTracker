@@ -19,59 +19,62 @@ const Profile = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  // Load current user from localStorage
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("user"));
     if (stored) {
       setUser(stored);
-      fetchStreaks(stored._id || stored.id);
+      updateStreak(); // LOG: calling updateStreak
+      fetchStreaks(); // LOG: calling fetchStreaks
       fetchUserPosts(stored._id || stored.id);
-
     } else {
       setLoading(false);
     }
   }, []);
 
-  // Fetch streaks
-// replace your fetchStreaks with this
-const fetchStreaks = async () => {
-  try {
-    console.log("Fetching streak from: http://localhost:3000/streak");
-    const res = await axios.get("http://localhost:3000/streak", {
-      withCredentials: true, // important if auth uses cookies
-    });
-    console.log("streak response:", res.status, res.data);
-    setStreak(res.data.streak ?? res.data.totalStreaks ?? 0);
-  } catch (err) {
-    console.error("streak fetch error (full):", err);
-    if (err.response) {
-      console.error("response data:", err.response.data);
-      console.error("response status:", err.response.status);
-      console.error("response headers:", err.response.headers);
-    } else {
-      console.error("no response (network / CORS / server down)", err.message);
+  const updateStreak = async () => {
+    try {
+      // LOG: updateStreak() request sent
+      const res = await axios.post(
+        "http://localhost:3000/streak/update",
+        {},
+        { withCredentials: true }
+      );
+      // LOG: updateStreak() response
+      console.log("LOG: updateStreak response →", res.data);
+    } catch (err) {
+      console.log("LOG: updateStreak error →", err);
     }
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
+  const fetchStreaks = async () => {
+    try {
+      // LOG: fetchStreaks() request sent
+      const res = await axios.get("http://localhost:3000/streak", {
+        withCredentials: true,
+      });
+      console.log("LOG: fetchStreaks response →", res.data);
+      setStreak(res.data.streak ?? 0);
+    } catch (err) {
+      console.log("LOG: fetchStreaks error →", err);
+    }
+  };
 
-  // Fetch user's posts
-const fetchUserPosts = async (userId) => {
-  try {
-    const res = await axios.get(
-      `http://localhost:3000/posts/user/${userId}`,
-      { withCredentials: true }
-    );
-    setPosts(res.data.posts || []);
-  } catch (e) {
-    console.log(e);
-  }
-};
+  const fetchUserPosts = async (userId) => {
+    try {
+      // LOG: fetching posts
+      const res = await axios.get(
+        `http://localhost:3000/posts/user/${userId}`,
+        { withCredentials: true }
+      );
+      console.log("LOG: posts response →", res.data);
+      setPosts(res.data.posts || []);
+    } catch (e) {
+      console.log("LOG: posts error →", e);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
-  // After updating profile
   const handleProfileUpdate = (updatedUser) => {
     setUser(updatedUser);
     localStorage.setItem("user", JSON.stringify(updatedUser));
@@ -91,10 +94,8 @@ const fetchUserPosts = async (userId) => {
     <DashboardLayout>
       <div className="p-6 min-h-screen text-white flex flex-col items-center">
 
-        {/* Profile Header */}
         <ProfileHeader user={user} streak={streak} />
 
-        {/* Edit Profile Button */}
         <button
           onClick={() => setIsEditing(true)}
           className="mt-4 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl"
@@ -102,18 +103,15 @@ const fetchUserPosts = async (userId) => {
           Edit Profile
         </button>
 
-        {/* Profile Stats */}
         <ProfileStats
           user={user}
-          postCount={posts.length} 
+          postCount={posts.length}
           onFollowersClick={() => setFollowersOpen(true)}
           onFollowingClick={() => setFollowingOpen(true)}
         />
 
-        {/* User Posts Grid */}
         <UserPostsGrid posts={posts} />
 
-        {/* Modals */}
         <FollowersModal
           username={user.username}
           isOpen={followersOpen}
