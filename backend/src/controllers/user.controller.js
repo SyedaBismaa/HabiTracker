@@ -1,6 +1,7 @@
 const { get } = require("mongoose");
 const userModel = require("../models/user.model");
-const { imagekit } = require("../service/Imagekit.service");
+const { imagekit, uploadFile } = require("../service/Imagekit.service");
+
 
 async function updateProfile(req, res) {
   try {
@@ -8,15 +9,17 @@ async function updateProfile(req, res) {
 
     let avatarUrl = null;
 
-    // Upload avatar if a file is provided
-    if (req.file) {
-      const uploadResult = await imagekit.upload({
-        file: req.file.buffer.toString("base64"),
-        fileName: `avatar_${userId}_${Date.now()}.jpg`,
-        folder: "/habitracker/users",
-      });
+    if (req.files && req.files.avatar) {
+      const file = req.files.avatar;
+      const base64 = file.data.toString("base64");
 
-      avatarUrl = uploadResult.url;
+      const uploaded = await uploadFile(
+        base64,
+        `avatar_${userId}_${Date.now()}.jpg`,
+        "/habitracker/users"
+      );
+
+      avatarUrl = uploaded.url;
     }
 
     const updatedData = {
@@ -32,14 +35,17 @@ async function updateProfile(req, res) {
       .findByIdAndUpdate(userId, updatedData, { new: true })
       .select("-password");
 
-    res.json({
+    return res.json({
       message: "Profile updated successfully",
       user: updatedUser,
     });
 
   } catch (error) {
-    console.error("UPDATE ERROR:", error);
-    res.status(500).json({ message: "Failed to update profile", error: error.message });
+    console.error("💥 UPDATE PROFILE ERROR:", error);
+    return res.status(500).json({
+      message: "Failed to update profile",
+      error: error.message,
+    });
   }
 }
 

@@ -13,54 +13,59 @@ passport.use(
       try {
         const googleId = profile.id;
         const email = profile.emails[0].value;
-        const avatar = profile.photos[0].value;
+        const googleAvatar = profile.photos[0].value;
         const displayName = profile.displayName;
 
-        // 1️⃣ FIRST: Check if user already exists by Google ID
+        // 1️⃣ Check if Google user already exists
         let user = await User.findOne({ googleId });
 
         if (user) {
-          // Update avatar if changed
-          user.avatar = avatar;
-          await user.save();
+          // ⭐ DO NOT OVERWRITE avatar if user uploaded custom avatar
+          const isGoogleAvatar = user.avatar?.includes("googleusercontent");
+
+          if (!user.avatar || isGoogleAvatar) {
+            user.avatar = googleAvatar;
+            await user.save();
+          }
+
           return done(null, user);
         }
 
-        // 2️⃣ SECOND: Check if a local account exists with same email
+        // 2️⃣ Check if local account exists by email
         const existingEmailUser = await User.findOne({ email });
 
         if (existingEmailUser) {
-          // Case A: Local user exists → DO NOT MERGE INTO SAME USER
-          // Create a separate Google account
+          // Create separate Google account to avoid merge
           user = await User.create({
             username: displayName,
-            email: `${email}_google_${googleId}`, // avoid email conflict
+            email: `${email}_google_${googleId}`,
             googleId,
             authProvider: "google",
-            avatar,
+            avatar: googleAvatar,
           });
 
           return done(null, user);
         }
 
-        // 3️⃣ THIRD: No user found → Create new Google account
+        // 3️⃣ New Google user → create account
         user = await User.create({
           username: displayName,
           email,
           googleId,
           authProvider: "google",
-          avatar,
+          avatar: googleAvatar,
         });
 
         return done(null, user);
 
       } catch (error) {
         console.error("Google Auth Error:", error);
-        done(error, null);
+        return done(error, null);
       }
     }
   )
 );
+
 
 // ❌ NO serializeUser / deserializeUser
 // We are NOT using session-based login

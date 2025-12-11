@@ -1,24 +1,17 @@
 const ImageKit = require("imagekit");
 
 const imagekit = new ImageKit({
-    publicKey: process.env.PUBLIC_KEY,
-    privateKey: process.env.PRIVATE_KEY,
-    urlEndpoint: process.env.URL_ENDPOINT,
+  publicKey: process.env.PUBLIC_KEY,
+  privateKey: process.env.PRIVATE_KEY,
+  urlEndpoint: process.env.URL_ENDPOINT,
 });
 
-// Optional helper function (keep it if you want)
-async function uploadFile(file, fileName, folder = "/habitracker/journals") {
-    const response = await imagekit.upload({
-        file,
-        fileName,
-        folder
-    });
-
-    return response;
+async function uploadFile(file, fileName, folder) {
+  return await imagekit.upload({
+    file,
+    fileName,
+    folder,
+  });
 }
 
-// EXPORT BOTH
-module.exports = {
-    imagekit,
-    uploadFile
-};
+module.exports = { imagekit, uploadFile };

@@ -18,33 +18,28 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     if (file) setAvatarPreview(URL.createObjectURL(file));
   };
 
-  const handleUpdate = async () => {
+ const handleUpdate = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("username", username);
+    formData.append("bio", bio);
+    if (avatar) formData.append("avatar", avatar);
 
+    const res = await axios.put(
+      "http://localhost:3000/users/update-profile",
+      formData,
+      { withCredentials: true }
+    );
 
-    try {
-      const formData = new FormData();
-      formData.append("username", username);
-      formData.append("bio", bio);
-      if (avatar) formData.append("avatar", avatar);
+    toast.success("Profile updated!");
+    onUpdate(res.data.user);
+    onClose();
 
-      const res = await axios.put(
-        "http://localhost:3000/users/update-profile",
-        formData,
-        {
-          withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" }
-        }
-      );
-
-      toast.success("Profile updated!");
-      onUpdate(res.data.user);
-      onClose();
-
-    } catch (error) {
-      console.error("❌ UPDATE ERROR:", error);
-      toast.error("Failed to update profile");
-    }
-  };
+  } catch (error) {
+    console.error("❌ UPDATE ERROR:", error);
+    toast.error("Failed to update profile");
+  }
+};
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

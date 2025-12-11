@@ -11,15 +11,16 @@ const ProfileHeader = ({ user, streak }) => {
       "
     >
       {/* Avatar */}
-      <img
-        src={user?.avatar}
-        alt="avatar"
-        className="
-          w-28 h-28 md:w-32 md:h-32 
-          rounded-full object-cover 
-          border border-gray-700
-        "
-      />
+     <img
+  src={`${user?.avatar}?t=${Date.now()}`}
+  alt="avatar"
+  className="
+    w-28 h-28 md:w-32 md:h-32 
+    rounded-full object-cover 
+    border border-gray-700
+  "
+/>
+
 
       {/* Right section */}
       <div className="flex flex-col items-center md:items-start w-full">
