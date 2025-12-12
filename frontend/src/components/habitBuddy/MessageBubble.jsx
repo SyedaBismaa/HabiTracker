@@ -5,16 +5,16 @@ export default function MessageBubble({ role, content, createdAt }) {
   const isUser = role === "user";
 
   return (
-       <div
+    <div
       className={`w-full flex ${
         isUser ? "justify-end" : "justify-start"
       } py-1`}
     >
       <div
         className={`
-          max-w-[90%] sm:max-w-[75%]
-          rounded-2xl p-2 sm:p-3 shadow 
-          text-sm sm:text-base
+          max-w-[90%] sm:max-w-[72%]
+          rounded-2xl p-2 shadow 
+          text-xs sm:text-sm leading-relaxed
           ${isUser 
             ? "bg-indigo-600 text-white rounded-br-none"
             : "bg-gray-100 text-gray-900 rounded-bl-none"
@@ -25,7 +25,7 @@ export default function MessageBubble({ role, content, createdAt }) {
 
         {createdAt && (
           <div
-            className={`text-[10px] sm:text-xs mt-1 ${
+            className={`text-[9px] sm:text-[10px] mt-1 ${
               isUser ? "text-indigo-200" : "text-gray-500"
             }`}
           >

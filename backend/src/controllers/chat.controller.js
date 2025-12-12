@@ -5,7 +5,7 @@ const Habit = require("../models/habit.model");
 const HabitLog = require("../models/habitLog.model");
 const { generateResponse } = require("../service/ai.service");
 
-// Create or return existing chat for user
+
 async function getOrCreateChat(userId) {
   let chat = await chatModel.findOne({ user: userId });
 
@@ -19,7 +19,6 @@ async function getOrCreateChat(userId) {
   return chat;
 }
 
-// GET chat + messages
 async function getChat(req, res) {
   try {
     const userId = req.user.id;
@@ -40,7 +39,7 @@ async function getChat(req, res) {
   }
 }
 
-// SEND MESSAGE → AI RESPONSE
+
 async function sendMessage(req, res) {
   try {
     const userId = req.user.id;
@@ -127,4 +126,26 @@ Goals: ${(fullUser?.goals && fullUser.goals.length > 0) ? fullUser.goals.join(",
   }
 }
 
-module.exports = { getChat, sendMessage };
+async function createNewChat(req,res){
+  try{
+   const userId = req.user.id;
+   const chat = await chatModel.findOne({user : userId});
+
+   if(chat){
+    await messageModel.deleteMany({chat : chat._id});
+   }else{
+    await chatModel.create({
+      user:userId,
+      title: "Habit Buddy Chat"
+    })
+   }
+   return res.status(200).json({
+    message:"New Chat Created"
+   })
+  }catch (err){
+    console.error("CREATE CHAT ERROR:", err);
+    res.status(500).json({ error: "Failed to create chat" });
+  }
+}
+
+module.exports = { getChat, sendMessage , createNewChat};

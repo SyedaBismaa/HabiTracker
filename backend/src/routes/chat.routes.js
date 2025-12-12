@@ -9,5 +9,6 @@ router.get('/', auth, chatController.getChat);
 
 // Send message to AI → get response
 router.post('/message', auth, chatController.sendMessage);
+router.post("/new", auth, chatController.createNewChat);
 
 module.exports = router;

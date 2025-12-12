@@ -3,6 +3,7 @@ import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 import ChatContainer from "../components/habitBuddy/ChatContainer";
+import HabitBuddyPanel from "../components/habitBuddy/HabitBuddyPanel";
 
 const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
@@ -59,21 +60,10 @@ const DashboardLayout = ({ children }) => {
         <main className="p-6">{children}</main>
 
         {/* AI PANEL (sliding from right) */}
-   {isAiOpen && (
-  <div className="fixed top-15 right-0 h-[90vh] w-[380px] bg-gray-900 border-l border-gray-800 shadow-xl z-50 flex flex-col">
+{/* AI PANEL */}
+<HabitBuddyPanel isOpen={isAiOpen} setIsOpen={setIsAiOpen} />
 
-    <button
-      onClick={closeAi}
-      className="absolute top-3 right-3 bg-gray-800 px-3 py-1 rounded"
-    >
-      ✕
-    </button>
 
-    <div className="h-full overflow-hidden pt-10">
-      <ChatContainer />
-    </div>
-  </div>
-)}
 
 
 

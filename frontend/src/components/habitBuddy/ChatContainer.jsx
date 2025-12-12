@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MessageList from "./MessageList";
 import ChatInput from "./ChatInput";
+import { Plus } from "lucide-react";
 
 const ChatContainer = () => {
   const [messages, setMessages] = useState([]);
@@ -23,6 +24,12 @@ const ChatContainer = () => {
   useEffect(() => {
     loadChat();
   }, []);
+
+  useEffect(() => {
+  const reset = () => setMessages([]);
+  window.addEventListener("new-chat", reset);
+  return () => window.removeEventListener("new-chat", reset);
+}, []);
 
   async function handleSend(e) {
     e.preventDefault();
@@ -68,12 +75,16 @@ const ChatContainer = () => {
     }
   }
 
+
+
+
   return (
-    <div className="flex flex-col h-full w-full bg-gray-900">
+    <div className="flex flex-col h-full w-full bg-gray-900 ">
+      
       <div className="flex-1 overflow-y-auto">
         <MessageList messages={messages} typing={typing} />
       </div>
-
+    
       <div className="border-t border-gray-700 p-3">
         <ChatInput
           input={input}
