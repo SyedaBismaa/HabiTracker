@@ -126,26 +126,34 @@ Goals: ${(fullUser?.goals && fullUser.goals.length > 0) ? fullUser.goals.join(",
   }
 }
 
-async function createNewChat(req,res){
-  try{
-   const userId = req.user.id;
-   const chat = await chatModel.findOne({user : userId});
+async function createNewChat(req, res) {
+  try {
+    const userId = req.user.id;
 
-   if(chat){
-    await messageModel.deleteMany({chat : chat._id});
-   }else{
+    const chat = await chatModel.findOne({ user: userId });
+
+    if (chat) {
+      // delete all messages of old chat
+      await messageModel.deleteMany({ chat: chat._id });
+
+      // OPTIONAL but recommended: delete old chat itself
+      await chatModel.deleteOne({ _id: chat._id });
+    }
+
+    // create fresh chat
     await chatModel.create({
-      user:userId,
-      title: "Habit Buddy Chat"
-    })
-   }
-   return res.status(200).json({
-    message:"New Chat Created"
-   })
-  }catch (err){
+      user: userId,
+      title: "Habit Buddy Chat",
+    });
+
+    return res.status(200).json({
+      message: "New Chat Created",
+    });
+  } catch (err) {
     console.error("CREATE CHAT ERROR:", err);
     res.status(500).json({ error: "Failed to create chat" });
   }
 }
+
 
 module.exports = { getChat, sendMessage , createNewChat};

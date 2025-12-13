@@ -9,9 +9,9 @@ const HabitBuddyPanel = ({ isOpen, setIsOpen }) => {
   }, [isOpen]);
 
   // Send event to ChatContainer to reset messages
-  const handleNewChat = () => {
-    window.dispatchEvent(new Event("new-chat"));
-  };
+ const handleNewChat = () => {
+  window.dispatchEvent(new Event("new-chat"));
+};
 
   return (
     <div

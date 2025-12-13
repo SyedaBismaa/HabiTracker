@@ -25,11 +25,24 @@ const ChatContainer = () => {
     loadChat();
   }, []);
 
-  useEffect(() => {
-  const reset = () => setMessages([]);
+useEffect(() => {
+  const reset = async () => {
+    try {
+      await fetch("http://localhost:3000/api/ai/reset", {
+        method: "DELETE",
+        credentials: "include",
+      });
+
+      setMessages([]);
+    } catch (err) {
+      console.error("Reset chat failed", err);
+    }
+  };
+
   window.addEventListener("new-chat", reset);
   return () => window.removeEventListener("new-chat", reset);
 }, []);
+
 
   async function handleSend(e) {
     e.preventDefault();
