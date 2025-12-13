@@ -2,18 +2,31 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
 import axios from "axios";
-import ChatContainer from "../components/habitBuddy/ChatContainer";
 import HabitBuddyPanel from "../components/habitBuddy/HabitBuddyPanel";
 
 const DashboardLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [user, setUser] = useState(null);
-
   const [isAiOpen, setIsAiOpen] = useState(false);
 
-  // Toggle AI Panel
-  const openAi = () => setIsAiOpen(true);
-  const closeAi = () => setIsAiOpen(false);
+  // 🌗 THEME STATE
+  const [theme, setTheme] = useState(
+    localStorage.getItem("theme") || "dark"
+  );
+
+  // Apply theme to html
+  useEffect(() => {
+    const root = document.documentElement;
+    if (theme === "dark") {
+      root.classList.add("dark");
+    } else {
+      root.classList.remove("dark");
+    }
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
+  const toggleTheme = () =>
+    setTheme(prev => (prev === "dark" ? "light" : "dark"));
 
   // Fetch logged-in user
   useEffect(() => {
@@ -23,14 +36,13 @@ const DashboardLayout = ({ children }) => {
           withCredentials: true,
         });
         setUser(res.data.user);
-      } catch (err) {
+      } catch {
         setUser(null);
       }
     }
     fetchUser();
   }, []);
 
-  // Logout handler
   const handleLogout = async () => {
     await axios.post("http://localhost:3000/auth/logout", {
       withCredentials: true,
@@ -39,34 +51,32 @@ const DashboardLayout = ({ children }) => {
     window.location.href = "/login";
   };
 
-  return (
-    <div className="flex bg-gray-900 min-h-screen text-white">
+  
 
-      {/* Sidebar */}
+  return (
+    <div className="flex min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors">
+
       <Sidebar
         isOpen={isSidebarOpen}
         setIsOpen={setIsSidebarOpen}
         user={user}
         logout={handleLogout}
-        openAi={openAi}
+        openAi={() => setIsAiOpen(true)}
       />
 
       <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-60" : "ml-16"}`}>
 
-        {/* Navbar */}
-        <Navbar user={user} logout={handleLogout} openAi={openAi} />
+        <Navbar
+          user={user}
+          logout={handleLogout}
+          openAi={() => setIsAiOpen(true)}
+          theme={theme}
+          toggleTheme={toggleTheme}
+        />
 
-        {/* MAIN CONTENT */}
         <main className="p-6">{children}</main>
 
-        {/* AI PANEL (sliding from right) */}
-{/* AI PANEL */}
-<HabitBuddyPanel isOpen={isAiOpen} setIsOpen={setIsAiOpen} />
-
-
-
-
-
+        <HabitBuddyPanel isOpen={isAiOpen} setIsOpen={setIsAiOpen} />
       </div>
     </div>
   );
