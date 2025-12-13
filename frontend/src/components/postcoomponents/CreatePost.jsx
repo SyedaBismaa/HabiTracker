@@ -8,11 +8,18 @@ const CreatePost = ({ onPostCreated }) => {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState("");
 
-  const handleImage = (e) => {
-    const file = e.target.files[0];
-    setImage(file);
-    if (file) setPreview(URL.createObjectURL(file));
-  };
+ const handleImage = (e) => {
+  const file = e.target.files[0];
+
+  if (file && file.size > 2 * 1024 * 1024) {
+    toast.error("Image should be less than 2MB");
+    return;
+  }
+
+  setImage(file);
+  setPreview(URL.createObjectURL(file));
+};
+
 
   const submitPost = async () => {
     if (!content.trim()) return alert("Write something!");

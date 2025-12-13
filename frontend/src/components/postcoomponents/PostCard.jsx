@@ -12,6 +12,7 @@ const PostCard = ({ post, onDelete }) => {
   const [liked, setLiked] = useState(post.likes.includes(userId));
   const [comments, setComments] = useState(post.comments || []);
   const [commentText, setCommentText] = useState("");
+  const [showImage, setShowImage] = useState(false);
 
   // LIKE
   const handleLike = async () => {
@@ -121,12 +122,19 @@ const PostCard = ({ post, onDelete }) => {
 
       {/* IMAGE */}
       {post.image && (
-        <img
-          src={post.image}
-          className="w-full rounded-xl mb-3 border"
-          alt="post-image"
-        />
-      )}
+  <div className="relative">
+    <img
+      src={post.image}
+      alt="post-image"
+      className="w-full max-h-[350px] object-cover rounded-xl mb-3 border cursor-pointer"
+      onClick={() => setShowImage(true)}
+    />
+    <p className="text-xs text-gray-500 text-center mt-1">
+      Click image to view full
+    </p>
+  </div>
+)}
+
 
       {/* LIKE + COMMENT BAR */}
       <div className="flex items-center gap-3 mb-3">
@@ -166,8 +174,7 @@ const PostCard = ({ post, onDelete }) => {
           Post
         </button>
       </div>
-
-      {/* COMMENT LIST */}
+}
       <div className="mt-3 space-y-2 max-h-40 overflow-y-auto pr-2">
         {comments.map((c) => {
           const canDelete =
@@ -196,7 +203,21 @@ const PostCard = ({ post, onDelete }) => {
           );
         })}
       </div>
+      {showImage && (
+  <div
+    className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
+    onClick={() => setShowImage(false)}
+  >
+    <img
+      src={post.image}
+      className="max-h-[90vh] max-w-[90vw] rounded-xl"
+      alt="full-post"
+    />
+  </div>
+)}
+
     </div>
+    
   );
 };
 

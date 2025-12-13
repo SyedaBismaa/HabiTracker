@@ -3,6 +3,7 @@ import DashboardLayout from "../layout/DashboardLayout";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { Trash2, BookOpen } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Journals = () => {
   const [journals, setJournals] = useState([]);
@@ -23,15 +24,16 @@ const Journals = () => {
   };
 
   const DeleteHandler = async (id) => {
-    if (!window.confirm("Delete this journal?")) return;
 
     try {
       await axios.delete(`http://localhost:3000/journals/${id}`, {
         withCredentials: true,
       });
       setJournals((prev) => prev.filter((j) => j._id !== id));
+      toast.success("Journal deleted successfully");
     } catch (err) {
       console.log(err);
+      toast.error("Failed to delete journal");
     }
   };
 

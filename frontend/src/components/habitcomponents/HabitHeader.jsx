@@ -3,7 +3,7 @@ import React from "react";
 const HabitHeader = ({ onOpenAddModal }) => {
   return (
     <div className="flex justify-between items-center mb-6">
-      <h2 className="text-2xl font-bold tracking-wide text-white">Habit Tracker</h2>
+      <h2 className="text-xl font-bold tracking-wide text-white">Habit Tracker</h2>
 
       <button
         onClick={onOpenAddModal}

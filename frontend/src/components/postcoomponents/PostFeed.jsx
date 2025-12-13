@@ -4,50 +4,55 @@ import PostCard from "./PostCard";
 
 const PostsFeed = ({ refresh }) => {
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const getPosts = async () => {
+  const getPosts = async (pageNumber) => {
     try {
       setLoading(true);
+
       const res = await axios.get(
-        `http://localhost:3000/posts?page=${page}`,
+        `http://localhost:3000/posts?page=${pageNumber}`,
         { withCredentials: true }
       );
 
-      if (res.data.posts.length === 0) {
+      const newPosts = res.data.posts || [];
+
+      if (newPosts.length === 0) {
         setHasMore(false);
+      } else {
+        setPosts(prev => [...prev, ...newPosts]);
       }
 
-      setPosts(prev => [...prev, ...res.data.posts]);
     } catch (error) {
-      console.log("Error fetching posts:", error);
+      console.error("Error fetching posts:", error);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDeletePost = (id) => {
-    setPosts(prev => prev.filter(p => p._id !== id));
-  };
-
+  // Fetch posts when page changes
   useEffect(() => {
-    getPosts();
-  }, [page, refresh]);
+    getPosts(page);
+  }, [page]);
 
-  // Infinite Scroll
+  // Reset feed when refresh toggles (new post created)
+  useEffect(() => {
+    setPosts([]);
+    setPage(1);
+    setHasMore(true);
+  }, [refresh]);
+
+  // Infinite scroll
   useEffect(() => {
     if (!hasMore || loading) return;
 
-    const observer = new IntersectionObserver(
-      entries => {
-        if (entries[0].isIntersecting) {
-          setPage(prev => prev + 1);
-        }
-      },
-      { threshold: 1 }
-    );
+    const observer = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPage(prev => prev + 1);
+      }
+    });
 
     const sentinel = document.getElementById("scroll-sentinel");
     if (sentinel) observer.observe(sentinel);
@@ -55,10 +60,18 @@ const PostsFeed = ({ refresh }) => {
     return () => observer.disconnect();
   }, [hasMore, loading]);
 
+  const handleDeletePost = (id) => {
+    setPosts(prev => prev.filter(post => post._id !== id));
+  };
+
   return (
     <div className="mt-4 space-y-4">
       {posts.map(post => (
-        <PostCard key={post._id} post={post} onDelete={handleDeletePost} />
+        <PostCard
+          key={post._id}
+          post={post}
+          onDelete={handleDeletePost}
+        />
       ))}
 
       {loading && (
@@ -68,10 +81,9 @@ const PostsFeed = ({ refresh }) => {
         </div>
       )}
 
-      {/* Infinite scroll trigger */}
-      <div id="scroll-sentinel" className="h-10"></div>
+      <div id="scroll-sentinel" className="h-10" />
 
-      {!hasMore && (
+      {!hasMore && !loading && (
         <p className="text-center text-gray-500 dark:text-gray-400">
           No more posts 🎉
         </p>
