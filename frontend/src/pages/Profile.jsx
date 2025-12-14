@@ -20,17 +20,27 @@ const Profile = () => {
   const [followingOpen, setFollowingOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("user"));
-    if (stored) {
-      setUser(stored);
-      updateStreak(); // LOG: calling updateStreak
-      fetchStreaks(); // LOG: calling fetchStreaks
-      fetchUserPosts(stored._id || stored.id);
-    } else {
+useEffect(() => {
+  const fetchProfile = async () => {
+    try {
+      const res = await axios.get(
+        "https://habitracker-y4i5.onrender.com/auth/me",
+        { withCredentials: true }
+      );
+
+      setUser(res.data.user);
+      fetchStreaks();
+      fetchUserPosts(res.data.user._id);
+    } catch {
+      setUser(null);
+    } finally {
       setLoading(false);
     }
-  }, []);
+  };
+
+  fetchProfile();
+}, []);
+
 
   const updateStreak = async () => {
     try {
