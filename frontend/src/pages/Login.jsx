@@ -26,6 +26,7 @@ const Login = ({ setUser })  => {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         setUser(response.data.user); 
         navigate("/");
+          return;
       }
     } catch (err) {
   console.log("LOGIN ERROR FULL:", err.response);
