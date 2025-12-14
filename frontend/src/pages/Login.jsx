@@ -8,33 +8,33 @@ const Login = ({ setUser })  => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleChange = (e) =>
+   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
 
-  try {
-    const response = await axios.post(
-      "https://habitracker-y4i5.onrender.com/auth/login",
-      formData,
-      { withCredentials: true }
-    );
+    try {
+      await axios.post(
+        "https://habitracker-y4i5.onrender.com/auth/login",
+        formData,
+        {
+          withCredentials: true,
+          headers: { "Content-Type": "application/json" }
+        }
+      );
 
-    if (response.data?.user) {
-      setUser(response.data.user);
-      navigate("/");
+      // ✅ Login SUCCESS (cookie set)
+      navigate("/");   // App.jsx will fetch /auth/me automatically
       return;
+
+    } catch (err) {
+      console.log("LOGIN ERROR:", err);
+      setError("Invalid email or password");
     }
+  };
 
-    setError("Unexpected login response");
-
-  } catch (err) {
-    console.log("LOGIN ERROR FULL:", err);
-    setError("Login failed. Try again.");
-  }
-};
 
 
   return (
