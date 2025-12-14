@@ -79,10 +79,11 @@ async function loginUser(req, res) {
 
     // Set cookie
     res.cookie("token", token, {
-      httpOnly: true,
-      sameSite: "strict",
-      secure: process.env.NODE_ENV === "production",
-    });
+  httpOnly: true,
+  secure: true,      // Render = HTTPS
+  sameSite: "none",  // Cross-site cookie
+});
+
 
     // Return FULL user data
     const fullUser = await userModel

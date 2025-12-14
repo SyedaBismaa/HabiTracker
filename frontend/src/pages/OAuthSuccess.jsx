@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const OAuthSuccess = () => {
+const OAuthSuccess = ({ setUser }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -11,6 +11,8 @@ const OAuthSuccess = () => {
         const res = await axios.get("https://habitracker-y4i5.onrender.com/auth/me", {
           withCredentials: true,
         });
+        setUser(res.data.user); // already fetching, just missing this
+
 
         console.log("OAuth user:", res.data.user);
 

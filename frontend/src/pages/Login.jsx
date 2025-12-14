@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Sparkles, LockKeyhole, Mail } from "lucide-react";
 
-const Login = () => {
+const Login = ({ setUser })  => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -24,11 +24,17 @@ const Login = () => {
 
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        setUser(response.data.user); 
         navigate("/");
       }
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed. Try again.");
-    }
+  console.log("LOGIN ERROR FULL:", err.response);
+  setError(
+    err.response?.data?.message ||
+    `Login failed (${err.response?.status})`
+  );
+}
+
   };
 
   return (
