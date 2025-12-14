@@ -11,32 +11,31 @@ const Login = ({ setUser })  => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
 
-    try {
-      const response = await axios.post(
-        "https://habitracker-y4i5.onrender.com/auth/login",
-        formData,
-        { withCredentials: true }
-      );
+  try {
+    const response = await axios.post(
+      "https://habitracker-y4i5.onrender.com/auth/login",
+      formData,
+      { withCredentials: true }
+    );
 
-      if (response.status === 200) {
-        localStorage.setItem("user", JSON.stringify(response.data.user));
-        setUser(response.data.user); 
-        navigate("/");
-          return;
-      }
-    } catch (err) {
-  console.log("LOGIN ERROR FULL:", err.response);
-  setError(
-    err.response?.data?.message ||
-    `Login failed (${err.response?.status})`
-  );
-}
+    if (response.data?.user) {
+      setUser(response.data.user);
+      navigate("/");
+      return;
+    }
 
-  };
+    setError("Unexpected login response");
+
+  } catch (err) {
+    console.log("LOGIN ERROR FULL:", err);
+    setError("Login failed. Try again.");
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-950 to-indigo-950 flex items-center justify-center ">
