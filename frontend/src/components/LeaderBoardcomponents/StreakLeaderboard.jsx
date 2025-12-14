@@ -8,7 +8,7 @@ const StreakLeaderboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/leaderboard?type=streak", {
+      .get("https://habitracker-y4i5.onrender.com/leaderboard?type=streak", {
         withCredentials: true,
       })
       .then((res) => setData(res.data.leaderboard))

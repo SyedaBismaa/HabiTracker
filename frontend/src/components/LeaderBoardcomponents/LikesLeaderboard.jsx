@@ -8,7 +8,7 @@ const LikesLeaderboard = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/leaderboard?type=likes", {
+      .get("https://habitracker-y4i5.onrender.com/leaderboard?type=likes", {
         withCredentials: true,
       })
       .then((res) => setData(res.data.leaderboard))

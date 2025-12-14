@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
-import DashboardLayout from "../../layout/DashboardLayout";
 
 const CreatePost = ({ onPostCreated }) => {
   const [content, setContent] = useState("");
@@ -29,7 +28,7 @@ const CreatePost = ({ onPostCreated }) => {
     if (image) formData.append("image", image);
 
     try {
-      const res = await axios.post("http://localhost:3000/posts/create", formData, {
+      const res = await axios.post("https://habitracker-y4i5.onrender.com/posts/create", formData, {
         withCredentials: true,
         
       });

@@ -26,7 +26,7 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     if (avatar) formData.append("avatar", avatar);
 
     const res = await axios.put(
-      "http://localhost:3000/users/update-profile",
+      "https://habitracker-y4i5.onrender.com/users/update-profile",
       formData,
       { withCredentials: true }
     );

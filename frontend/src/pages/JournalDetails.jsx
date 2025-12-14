@@ -17,7 +17,7 @@ const JournalDetails = () => {
   }, [id]);
 
   const fetchJournal = async () => {
-    const res = await axios.get(`http://localhost:3000/journals`, {
+    const res = await axios.get(`https://habitracker-y4i5.onrender.com/journals`, {
       withCredentials: true,
     });
 
@@ -39,7 +39,7 @@ const JournalDetails = () => {
   const saveJournal = async () => {
     if (id === "new") {
       await axios.post(
-        "http://localhost:3000/journals",
+        "https://habitracker-y4i5.onrender.com/journals",
         { title, content, images },
         { withCredentials: true }
       );
@@ -47,7 +47,7 @@ const JournalDetails = () => {
     }
 
     await axios.put(
-      `http://localhost:3000/journals/${id}`,
+      `https://habitracker-y4i5.onrender.com/journals/${id}`,
       { title, content, images },
       { withCredentials: true }
     );
@@ -61,13 +61,13 @@ const JournalDetails = () => {
     form.append("image", file);
 
     const res = await axios.post(
-      "http://localhost:3000/journals/upload",
+      "https://habitracker-y4i5.onrender.com/journals/upload",
       form,
       { withCredentials: true }
     );
 const updated = [...images, res.data.url];
 setImages(updated);
-await axios.put(`http://localhost:3000/journals/${id}`, {
+await axios.put(`https://habitracker-y4i5.onrender.com/journals/${id}`, {
   title,
   content,
   images: updated,

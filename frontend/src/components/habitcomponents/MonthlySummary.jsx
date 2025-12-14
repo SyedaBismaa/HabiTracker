@@ -1,12 +1,6 @@
 import React from "react";
 
-/**
- * MonthlySummary
- * props:
- *  - overallPercent (0-100)
- *  - activeHabits (number)
- *  - totalDone (number)
- */
+
 export default function MonthlySummary({ overallPercent = 0, activeHabits = 0, totalDone = 0 }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">

@@ -13,7 +13,7 @@ const PostsFeed = ({ refresh }) => {
       setLoading(true);
 
       const res = await axios.get(
-        `http://localhost:3000/posts?page=${pageNumber}`,
+        `https://habitracker-y4i5.onrender.com/posts?page=${pageNumber}`,
         { withCredentials: true }
       );
 

@@ -8,7 +8,7 @@ const OAuthSuccess = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3000/auth/me", {
+        const res = await axios.get("https://habitracker-y4i5.onrender.com/auth/me", {
           withCredentials: true,
         });
 

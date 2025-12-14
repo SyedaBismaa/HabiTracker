@@ -13,8 +13,8 @@ const Todo = () => {
     const fetchData = async () => {
       try {
         const [userRes, todosRes] = await Promise.all([
-          axios.get("http://localhost:3000/auth/user", { withCredentials: true }),
-          axios.get("http://localhost:3000/todos", { withCredentials: true }),
+          axios.get("https://habitracker-y4i5.onrender.com/auth/user", { withCredentials: true }),
+          axios.get("https://habitracker-y4i5.onrender.com/todos", { withCredentials: true }),
         ]);
 
         setUser(userRes.data.user);
@@ -35,7 +35,7 @@ const Todo = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:3000/todos",
+        "https://habitracker-y4i5.onrender.com/todos",
         { task: newTask },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ const Todo = () => {
   const toggleTodo = async (id) => {
     try {
       const res = await axios.patch(
-        `http://localhost:3000/todos/${id}`,
+        `https://habitracker-y4i5.onrender.com/todos/${id}`,
         {},
         { withCredentials: true }
       );
@@ -65,7 +65,7 @@ const Todo = () => {
 
   const deleteTodo = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/todos/${id}`, {
+      await axios.delete(`https://habitracker-y4i5.onrender.com/todos/${id}`, {
         withCredentials: true,
       });
 

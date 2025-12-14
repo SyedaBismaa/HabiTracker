@@ -23,14 +23,14 @@ const PublicProfile = () => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/users/profile/${username}`,
+          `https://habitracker-y4i5.onrender.com/users/profile/${username}`,
           { withCredentials: true }
         );
 
         setUserData(res.data.user);
 
         const p = await axios.get(
-          `http://localhost:3000/posts/user/${res.data.user._id}`,
+          `https://habitracker-y4i5.onrender.com/posts/user/${res.data.user._id}`,
           { withCredentials: true }
         );
 

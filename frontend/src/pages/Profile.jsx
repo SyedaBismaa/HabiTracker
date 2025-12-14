@@ -35,7 +35,7 @@ const Profile = () => {
   const updateStreak = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:3000/streak/update",
+        "https://habitracker-y4i5.onrender.com/streak/update",
         {},
         { withCredentials: true }
       );
@@ -47,7 +47,7 @@ const Profile = () => {
   const fetchStreaks = async () => {
     try {
       
-      const res = await axios.get("http://localhost:3000/streak", {
+      const res = await axios.get("https://habitracker-y4i5.onrender.com/streak", {
         withCredentials: true,
       });
       setStreak(res.data.streak ?? 0);
@@ -59,7 +59,7 @@ const Profile = () => {
   const fetchUserPosts = async (userId) => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/posts/user/${userId}`,
+        `https://habitracker-y4i5.onrender.com/posts/user/${userId}`,
         { withCredentials: true }
       );
       setPosts(res.data.posts || []);

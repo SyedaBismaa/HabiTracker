@@ -12,7 +12,7 @@ const FollowersModal = ({ username, isOpen, onClose }) => {
   const fetchFollowers = async () => {
     try {
       const res = await axios.get(
-        `http://localhost:3000/users/followers/${username}`,
+        `https://habitracker-y4i5.onrender.com/users/followers/${username}`,
         { withCredentials: true }
       );
       setFollowers(res.data.followers);

@@ -18,7 +18,7 @@ const PostCard = ({ post, onDelete }) => {
   const handleLike = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/posts/like/${post._id}`,
+        `https://habitracker-y4i5.onrender.com/posts/like/${post._id}`,
         {},
         { withCredentials: true }
       );
@@ -33,7 +33,7 @@ const PostCard = ({ post, onDelete }) => {
   // DELETE POST
   const handleDeletePost = async () => {
     try {
-      await axios.delete(`http://localhost:3000/posts/delete/${post._id}`, {
+      await axios.delete(`https://habitracker-y4i5.onrender.com/posts/delete/${post._id}`, {
         withCredentials: true,
       });
 
@@ -51,7 +51,7 @@ const PostCard = ({ post, onDelete }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:3000/posts/comment/${post._id}`,
+        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}`,
         { text: commentText },
         { withCredentials: true }
       );
@@ -67,7 +67,7 @@ const PostCard = ({ post, onDelete }) => {
   const handleDeleteComment = async (commentId) => {
     try {
       const res = await axios.delete(
-        `http://localhost:3000/posts/comment/${post._id}/${commentId}`,
+        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}/${commentId}`,
         { withCredentials: true }
       );
 

@@ -32,7 +32,7 @@ const DashboardLayout = ({ children }) => {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const res = await axios.get("http://localhost:3000/auth/user", {
+        const res = await axios.get("https://habitracker-y4i5.onrender.com/auth/user", {
           withCredentials: true,
         });
         setUser(res.data.user);
@@ -44,7 +44,7 @@ const DashboardLayout = ({ children }) => {
   }, []);
 
   const handleLogout = async () => {
-    await axios.post("http://localhost:3000/auth/logout", {
+    await axios.post("https://habitracker-y4i5.onrender.com/auth/logout", {
       withCredentials: true,
     });
     setUser(null);

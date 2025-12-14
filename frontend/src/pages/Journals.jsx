@@ -14,7 +14,7 @@ const Journals = () => {
 
   const fetchJournals = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/journals", {
+      const res = await axios.get("https://habitracker-y4i5.onrender.com/journals", {
         withCredentials: true,
       });
       setJournals(res.data.journals);
@@ -26,7 +26,7 @@ const Journals = () => {
   const DeleteHandler = async (id) => {
 
     try {
-      await axios.delete(`http://localhost:3000/journals/${id}`, {
+      await axios.delete(`https://habitracker-y4i5.onrender.com/journals/${id}`, {
         withCredentials: true,
       });
       setJournals((prev) => prev.filter((j) => j._id !== id));

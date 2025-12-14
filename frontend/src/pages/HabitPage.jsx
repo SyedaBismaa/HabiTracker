@@ -9,7 +9,7 @@ import MonthlySummary from "../components/habitcomponents/MonthlySummary";
 import MiniAreaChart from "../components/habitcomponents/MiniAreaChart";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://localhost:3000";
+axios.defaults.baseURL = "https://habitracker-y4i5.onrender.com";
 axios.defaults.withCredentials = true;
 
 

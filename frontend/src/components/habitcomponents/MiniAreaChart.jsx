@@ -9,11 +9,7 @@ import {
   CartesianGrid,
 } from "recharts";
 
-/**
- * MiniAreaChart
- * props:
- *  - data: [{ date: '2025-11-01', pct: 40 }, ...]  (date string and pct 0-100)
- */
+
 export default function MiniAreaChart({ data = [] }) {
   // simple formatting for the x-axis: show day only
   const formatted = data.map((d) => ({ ...d, day: d.date.slice(8, 10) }));

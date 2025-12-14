@@ -11,7 +11,7 @@ const ChatContainer = () => {
 
   async function loadChat() {
     try {
-      const res = await fetch("http://localhost:3000/api/ai", {
+      const res = await fetch("https://habitracker-y4i5.onrender.com/api/ai", {
         credentials: "include",
       });
       const data = await res.json();
@@ -28,7 +28,7 @@ const ChatContainer = () => {
 useEffect(() => {
   const reset = async () => {
     try {
-      await fetch("http://localhost:3000/api/ai/reset", {
+      await fetch("https://habitracker-y4i5.onrender.com/api/ai/reset", {
         method: "DELETE",
         credentials: "include",
       });
@@ -63,7 +63,7 @@ useEffect(() => {
     setTyping(true);
 
     try {
-      const res = await fetch("http://localhost:3000/api/ai/message", {
+      const res = await fetch("https://habitracker-y4i5.onrender.com/api/ai/message", {
         method: "POST",
         credentials: "include",
         headers: { "Content-Type": "application/json" },

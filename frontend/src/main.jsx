@@ -15,7 +15,6 @@ import Posts from "./pages/Posts";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-// ⭐⭐ IMPORTANT — THIS LINE WAS MISSING ⭐⭐
 import "./index.css";
 
 import PublicProfile from "./pages/PublicProfile";

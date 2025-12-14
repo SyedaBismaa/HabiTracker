@@ -12,7 +12,7 @@ const FollowButton = ({ username, onFollowUpdate }) => {
     const checkFollowStatus = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:3000/users/check-follow/${username}`,
+          `https://habitracker-y4i5.onrender.com/users/check-follow/${username}`,
           { withCredentials: true }
         );
         setIsFollowing(res.data.following);
@@ -37,8 +37,8 @@ const FollowButton = ({ username, onFollowUpdate }) => {
       setIsFollowing(!isFollowing); // Optimistic UI
 
       const url = isFollowing
-        ? `http://localhost:3000/users/unfollow/${username}`
-        : `http://localhost:3000/users/follow/${username}`;
+        ? `https://habitracker-y4i5.onrender.com/users/unfollow/${username}`
+        : `https://habitracker-y4i5.onrender.com/users/follow/${username}`;
 
       const res = await axios.post(url, {}, { withCredentials: true });
 

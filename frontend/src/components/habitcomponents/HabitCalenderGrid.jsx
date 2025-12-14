@@ -2,16 +2,6 @@
 import React from "react";
 import HabitRow from "./HabitRow";
 
-/**
- * HabitCalendarGrid
- * Props:
- *  - habits: array of habit objects
- *  - logs: object mapping habitId -> [{ date, status, dayNumber }, ...]
- *  - onToggle(habitId, date)
- *  - onDelete(habitId)
- *  - month (1-12)
- *  - year (YYYY)
- */
 const HabitCalendarGrid = ({
   habits = [],
   logs = {},
