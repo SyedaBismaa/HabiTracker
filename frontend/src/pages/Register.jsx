@@ -46,7 +46,7 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-950 to-indigo-950 flex items-center justify-center">
+    <div className="min-h-[100dvh] bg-gradient-to-br from-gray-950 via-slate-950 to-indigo-950 flex items-center justify-center">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-28 right-0 h-64 w-64 rounded-full bg-purple-500/35 blur-3xl" />
         <div className="absolute  h-72 w-72 rounded-full bg-indigo-500/30 blur-3xl" />

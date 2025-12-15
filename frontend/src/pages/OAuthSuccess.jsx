@@ -26,7 +26,7 @@ const OAuthSuccess = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex items-center justify-center text-white">
+    <div className="min-h-[100dvh] flex items-center justify-center text-white">
       Signing you in with Google…
     </div>
   );

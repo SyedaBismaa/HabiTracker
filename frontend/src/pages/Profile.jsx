@@ -99,7 +99,7 @@ useEffect(() => {
 
   return (
     <DashboardLayout>
-      <div className="p-6 min-h-screen text-white flex flex-col items-center">
+      <div className="p-6 min-h-[100dvh] text-white flex flex-col items-center">
 
         <ProfileHeader user={user} streak={streak} />
 
