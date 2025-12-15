@@ -29,6 +29,7 @@ useEffect(() => {
       );
 
       setUser(res.data.user);
+      updateStreak();
       fetchStreaks();
       fetchUserPosts(res.data.user._id);
     } catch {
@@ -40,6 +41,7 @@ useEffect(() => {
 
   fetchProfile();
 }, []);
+
 
 
   const updateStreak = async () => {
