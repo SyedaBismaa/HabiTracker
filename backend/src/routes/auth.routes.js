@@ -55,7 +55,7 @@ router.get(
     });
 
     // Redirect front-end without token in URL
-    res.redirect("http://localhost:5173/oauth-success");
+   res.redirect(`http://localhost:5173/oauth-success`);
   }
 );
 
