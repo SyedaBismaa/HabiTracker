@@ -14,210 +14,109 @@ const PostCard = ({ post, onDelete }) => {
   const [commentText, setCommentText] = useState("");
   const [showImage, setShowImage] = useState(false);
 
-  // LIKE
+  const isOwner = post.user?._id?.toString() === userId?.toString();
+
   const handleLike = async () => {
-    try {
-      const res = await axios.put(
-        `https://habitracker-y4i5.onrender.com/posts/like/${post._id}`,
-        {},
-        { withCredentials: true }
-      );
-
-      setLikes(res.data.post.likes.length);
-      setLiked(res.data.post.likes.includes(userId));
-    } catch (error) {
-      console.log("Error liking post:", error);
-    }
+    const res = await axios.put(
+      `https://habitracker-y4i5.onrender.com/posts/like/${post._id}`,
+      {},
+      { withCredentials: true }
+    );
+    setLikes(res.data.post.likes.length);
+    setLiked(res.data.post.likes.includes(userId));
   };
 
-  // DELETE POST
   const handleDeletePost = async () => {
-    try {
-      await axios.delete(`https://habitracker-y4i5.onrender.com/posts/delete/${post._id}`, {
-        withCredentials: true,
-      });
-
-      toast.success("Post deleted!");
-      onDelete && onDelete(post._id);
-    } catch (err) {
-      toast.error("Error deleting post");
-      console.log("Error deleting post:", err);
-    }
+    await axios.delete(
+      `https://habitracker-y4i5.onrender.com/posts/delete/${post._id}`,
+      { withCredentials: true }
+    );
+    toast.success("Post deleted");
+    onDelete && onDelete(post._id);
   };
 
-  // ADD COMMENT
   const handleComment = async () => {
     if (!commentText.trim()) return;
-
-    try {
-      const res = await axios.post(
-        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}`,
-        { text: commentText },
-        { withCredentials: true }
-      );
-
-      setComments(res.data.post.comments);
-      setCommentText("");
-    } catch (error) {
-      console.log(error);
-    }
+    const res = await axios.post(
+      `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}`,
+      { text: commentText },
+      { withCredentials: true }
+    );
+    setComments(res.data.post.comments);
+    setCommentText("");
   };
-
-  // DELETE COMMENT
-  const handleDeleteComment = async (commentId) => {
-    try {
-      const res = await axios.delete(
-        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}/${commentId}`,
-        { withCredentials: true }
-      );
-
-      setComments(res.data.post.comments);
-      toast.success("Comment deleted!");
-    } catch (error) {
-      toast.error("Error deleting comment");
-    }
-  };
-
-  const formatTime = (date) => new Date(date).toLocaleString();
 
   return (
-    <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-4 rounded-2xl shadow-sm mb-4">
+    <div className="bg-gray-900 border border-gray-700 p-4 rounded-2xl shadow mb-4 text-white">
 
-      {/* HEADER */}
+      {/* Header */}
       <div className="flex items-center mb-3">
-
-        {/* Avatar → Public Profile */}
         <Link to={`/profile/${post.user?.username}`}>
           <img
             src={post.user?.avatar}
-            className="w-10 h-10 rounded-full border object-cover cursor-pointer"
+            className="w-10 h-10 rounded-full border object-cover"
             alt="avatar"
           />
         </Link>
 
-        {/* Username + Time */}
         <div className="ml-3 flex-1">
           <Link to={`/profile/${post.user?.username}`}>
-            <p className="font-semibold cursor-pointer">
-              {post.user?.username}
-            </p>
+            <p className="font-semibold">{post.user?.username}</p>
           </Link>
-
-          <p className="text-xs text-gray-500">{formatTime(post.createdAt)}</p>
+          <p className="text-xs text-gray-400">
+            {new Date(post.createdAt).toLocaleString()}
+          </p>
         </div>
 
-        {/* DELETE POST */}
-        {userId === post.user?._id?.toString() && (
-          <button
-            onClick={handleDeletePost}
-            className="text-red-500 hover:text-red-600"
-          >
+        {isOwner && (
+          <button onClick={handleDeletePost} className="text-red-500">
             <Trash2 size={18} />
           </button>
         )}
       </div>
 
-      {/* CONTENT */}
       <p className="mb-3">{post.content}</p>
 
-      {/* IMAGE */}
       {post.image && (
-  <div className="relative">
-    <img
-      src={post.image}
-      alt="post-image"
-      className="w-full max-h-[350px] object-cover rounded-xl mb-3 border cursor-pointer"
-      onClick={() => setShowImage(true)}
-    />
-    <p className="text-xs text-gray-500 text-center mt-1">
-      Click image to view full
-    </p>
-  </div>
-)}
+        <img
+          src={post.image}
+          className="w-full rounded-xl mb-3 cursor-pointer"
+          onClick={() => setShowImage(true)}
+        />
+      )}
 
-
-      {/* LIKE + COMMENT BAR */}
-      <div className="flex items-center gap-3 mb-3">
-
-        {/* LIKE BUTTON */}
+      <div className="flex gap-3 mb-3">
         <button
           onClick={handleLike}
           className={`flex items-center gap-1 px-3 py-1.5 rounded-lg ${
-            liked ? "bg-red-500 text-white" : "bg-gray-200 dark:bg-gray-700"
+            liked ? "bg-red-500" : "bg-gray-700"
           }`}
         >
           <Heart size={18} fill={liked ? "white" : "none"} />
           {likes}
         </button>
 
-        {/* COMMENTS COUNT */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 text-gray-300">
           <MessageCircle size={18} />
           {comments.length}
         </div>
       </div>
 
-      {/* COMMENT INPUT */}
-      <div className="flex items-center gap-2 mt-2">
+      <div className="flex gap-2">
         <input
-          type="text"
           value={commentText}
-          placeholder="Add a comment..."
           onChange={(e) => setCommentText(e.target.value)}
-          className="flex-1 px-3 py-2 bg-gray-100 dark:bg-gray-800 rounded-lg"
+          placeholder="Add a comment..."
+          className="flex-1 px-3 py-2 bg-gray-800 rounded-lg outline-none"
         />
-
         <button
           onClick={handleComment}
-          className="px-3 py-1 bg-indigo-600 text-white rounded-lg"
+          className="px-3 py-1 bg-indigo-600 rounded-lg"
         >
           Post
         </button>
       </div>
-
-      <div className="mt-3 space-y-2 max-h-40 overflow-y-auto pr-2">
-        {comments.map((c) => {
-          const canDelete =
-            c.user?.toString() === userId ||
-            c.user === userId ||
-            post.user?._id?.toString() === userId;
-
-          return (
-            <div
-              key={c._id}
-              className="flex justify-between items-start bg-gray-100 dark:bg-gray-800 p-2 rounded-lg text-sm"
-            >
-              <div>
-                <strong>{c.username}: </strong> {c.text}
-              </div>
-
-              {canDelete && (
-                <button
-                  onClick={() => handleDeleteComment(c._id)}
-                  className="text-red-500 hover:text-red-600 ml-3"
-                >
-                  <Trash2 size={15} />
-                </button>
-              )}
-            </div>
-          );
-        })}
-      </div>
-      {showImage && (
-  <div
-    className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center"
-    onClick={() => setShowImage(false)}
-  >
-    <img
-      src={post.image}
-      className="max-h-[90vh] max-w-[90vw] rounded-xl"
-      alt="full-post"
-    />
-  </div>
-)}
-
     </div>
-    
   );
 };
 
