@@ -24,7 +24,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 
 // 🔹 Loading fallback
 const Loader = () => (
-  <div className="min-h-screen flex items-center justify-center text-white">
+  <div className="min-h-[100dvh] flex items-center justify-center text-white">
     Loading…
   </div>
 );

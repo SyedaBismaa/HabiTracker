@@ -48,7 +48,7 @@ const PublicProfile = () => {
   if (loading) {
     return (
       <DashboardLayout>
-        <div className="min-h-screen flex items-center justify-center text-white">
+        <div className="min-h-[100dvh] flex items-center justify  justify-center text-white">
           Loading profile...
         </div>
       </DashboardLayout>
@@ -58,7 +58,7 @@ const PublicProfile = () => {
   if (!userData) {
     return (
       <DashboardLayout>
-        <div className="min-h-screen flex items-center justify-center text-white">
+        <div className="min-h-[100dvh] flex items-center justify-center text-white">
           User not found
         </div>
       </DashboardLayout>
@@ -67,7 +67,7 @@ const PublicProfile = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-gray-900 text-white px-4 py-6 flex flex-col items-center">
+      <div className="min-h-[100dvh] bg-gray-900 text-white px-4 py-6 flex flex-col items-center">
 
         <PublicProfileHeader 
           user={userData}
