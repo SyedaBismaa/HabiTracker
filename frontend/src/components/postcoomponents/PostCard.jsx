@@ -174,7 +174,7 @@ const PostCard = ({ post, onDelete }) => {
           Post
         </button>
       </div>
-}
+
       <div className="mt-3 space-y-2 max-h-40 overflow-y-auto pr-2">
         {comments.map((c) => {
           const canDelete =
