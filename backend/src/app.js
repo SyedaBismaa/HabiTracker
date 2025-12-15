@@ -29,7 +29,7 @@ app.use(cors({
   origin: (origin, callback) => {
     const allowedOrigins = [
       "http://localhost:5173",
-      "https://portfolio-woad-two-67.vercel.app"
+      "https://habitracker-ten.vercel.app"
     ];
 
     // allow non-browser tools (Postman)
