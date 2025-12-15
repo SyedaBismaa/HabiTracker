@@ -2,26 +2,22 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const OAuthSuccess = ({ setUser }) => {
+const OAuthSuccess = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get("https://habitracker-y4i5.onrender.com/auth/me", {
-          withCredentials: true,
-        });
-        setUser(res.data.user); // already fetching, just missing this
+        // Cookie already set → just verify user
+        await axios.get(
+          "https://habitracker-y4i5.onrender.com/auth/me",
+          { withCredentials: true }
+        );
 
-
-        console.log("OAuth user:", res.data.user);
-
-        // ⭐ IMPORTANT: Save fresh user (WITH NEW AVATAR)
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-
+        // ✅ Auth confirmed
         navigate("/");
       } catch (err) {
-        console.log("OAuth fetch error:", err);
+        console.log("OAuth verify failed:", err);
         navigate("/login");
       }
     };
@@ -30,7 +26,9 @@ const OAuthSuccess = ({ setUser }) => {
   }, []);
 
   return (
-    <div className="text-white p-10">Signing you in...</div>
+    <div className="min-h-screen flex items-center justify-center text-white">
+      Signing you in with Google…
+    </div>
   );
 };
 
