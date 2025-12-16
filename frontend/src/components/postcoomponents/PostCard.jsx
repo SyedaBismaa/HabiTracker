@@ -118,7 +118,7 @@ const PostCard = ({ post, onDelete }) => {
           {isOwner && (
             <button
               onClick={handleDeletePost}
-              className="text-red-500 bg-yellow-800 hover:text-red-600"
+              className="text-red-500  hover:text-red-600"
             >
               <Trash2 size={18} />
             </button>

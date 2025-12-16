@@ -22,8 +22,10 @@ const App = () => {
           { withCredentials: true }
         );
         setUser(res.data.user);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
       } catch {
         setUser(null);
+        localStorage.removeItem("user");
       } finally {
         setLoading(false);
       }
