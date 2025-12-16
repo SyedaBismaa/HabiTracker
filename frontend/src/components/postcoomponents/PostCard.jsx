@@ -37,6 +37,7 @@ const PostCard = ({ post, onDelete }) => {
   );
   const [comments, setComments] = useState(post.comments || []);
   const [commentText, setCommentText] = useState("");
+  const [showComments, setShowComments] = useState(false);
 
   // 🔥 IMAGE MODAL STATE
   const [showImage, setShowImage] = useState(false);
@@ -84,6 +85,20 @@ const PostCard = ({ post, onDelete }) => {
       setCommentText("");
     } catch {
       toast.error("Comment failed");
+    }
+  };
+
+  // DELETE COMMENT
+  const handleDeleteComment = async (commentId) => {
+    try {
+      const res = await axios.delete(
+        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}/${commentId}`,
+        { withCredentials: true }
+      );
+      setComments(res.data.post.comments);
+      toast.success("Comment deleted");
+    } catch {
+      toast.error("Delete comment failed");
     }
   };
 
@@ -154,27 +169,75 @@ const PostCard = ({ post, onDelete }) => {
             {likes}
           </button>
 
-          <div className="flex items-center gap-1">
+          <button
+            onClick={() => setShowComments(!showComments)}
+            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-gray-700 hover:bg-gray-600"
+          >
             <MessageCircle size={18} />
             {comments.length}
-          </div>
+          </button>
         </div>
 
         {/* COMMENT INPUT */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 mb-3">
           <input
             value={commentText}
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="Add a comment..."
-            className="flex-1 px-3 py-2 bg-gray-800 rounded-lg outline-none"
+            className="flex-1 px-3 py-2 bg-gray-800 rounded-lg outline-none text-white"
           />
           <button
             onClick={handleComment}
-            className="px-4 py-2 bg-indigo-600 rounded-lg"
+            className="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-700"
           >
             Post
           </button>
         </div>
+
+        {/* COMMENTS SECTION */}
+        {showComments && comments.length > 0 && (
+          <div className="border-t border-gray-700 pt-3 mt-3 space-y-3 max-h-64 overflow-y-auto">
+            {comments.map((comment) => (
+              <div key={comment._id} className="flex gap-2">
+                {/* Avatar Placeholder */}
+                <div className="w-8 h-8 rounded-full bg-gray-700 flex-shrink-0" />
+
+                {/* Comment Content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between gap-2">
+                    <div>
+                      <p className="text-sm font-semibold text-white">
+                        {comment.username || "Unknown"}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {new Date(comment.createdAt).toLocaleString()}
+                      </p>
+                    </div>
+
+                    {/* Delete Comment Button */}
+                    {(userId === comment.user || isOwner) && (
+                      <button
+                        onClick={() => handleDeleteComment(comment._id)}
+                        className="text-red-400 hover:text-red-300 flex-shrink-0"
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-300 mt-1 break-words">
+                    {comment.text}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {showComments && comments.length === 0 && (
+          <p className="text-center text-gray-400 text-sm py-3">
+            No comments yet
+          </p>
+        )}
       </div>
 
       {/* 🔥 FULL IMAGE MODAL */}

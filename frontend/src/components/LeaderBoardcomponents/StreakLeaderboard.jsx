@@ -27,8 +27,8 @@ const StreakLeaderboard = () => {
             className="flex items-center gap-3 min-w-[180px] cursor-pointer"
             onClick={() => navigate(`/profile/${user.username}`)}
           >
-            <span className="text-xl font-bold">
-              🔥 {index + 1}
+            <span className="text-xl font-mdium ">
+            {index + 1}
             </span>
 
             <img
