@@ -45,7 +45,7 @@ const PostCard = ({ post, onDelete }) => {
   const handleLike = async () => {
     try {
       const res = await axios.put(
-        `http://localhost:3000/posts/like/${post._id}`,
+        `https://habitracker-y4i5.onrender.com/posts/like/${post._id}`,
         {},
         { withCredentials: true }
       );
@@ -60,7 +60,7 @@ const PostCard = ({ post, onDelete }) => {
   const handleDeletePost = async () => {
     try {
       await axios.delete(
-        `http://localhost:3000/posts/delete/${post._id}`,
+        `https://habitracker-y4i5.onrender.com/posts/delete/${post._id}`,
         { withCredentials: true }
       );
       toast.success("Post deleted");
@@ -76,7 +76,7 @@ const PostCard = ({ post, onDelete }) => {
 
     try {
       const res = await axios.post(
-        `http://localhost:3000/posts/comment/${post._id}`,
+        `https://habitracker-y4i5.onrender.com/posts/comment/${post._id}`,
         { text: commentText },
         { withCredentials: true }
       );
