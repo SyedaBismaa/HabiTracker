@@ -17,7 +17,9 @@ const StreakLeaderboard = () => {
 
   return (
     <div className="space-y-3 w-full">
-      {data.map((user, index) => (
+      {data
+        .filter((user) => user.streak > 0)
+        .map((user, index) => (
         <div
           key={index}
           className="bg-gray-900 border border-gray-700 p-4 rounded-xl 

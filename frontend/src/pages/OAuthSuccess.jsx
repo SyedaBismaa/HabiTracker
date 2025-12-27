@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const OAuthSuccess = () => {
   const navigate = useNavigate();
@@ -13,6 +14,25 @@ const OAuthSuccess = () => {
           "https://habitracker-y4i5.onrender.com/auth/me",
           { withCredentials: true }
         );
+
+        // Update streak on OAuth login
+        try {
+          await axios.post(
+            "https://habitracker-y4i5.onrender.com/streak/update",
+            {},
+            { withCredentials: true }
+          );
+          toast.success("🔥+1", {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        } catch (streakErr) {
+          console.log("Streak update failed:", streakErr);
+        }
 
         // ✅ Auth confirmed
         navigate("/");

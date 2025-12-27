@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Sparkles, LockKeyhole, Mail } from "lucide-react";
+import { toast } from "react-toastify";
 
 const Login = ({ setUser })  => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -26,6 +27,26 @@ const Login = ({ setUser })  => {
       );
 
       // ✅ Login SUCCESS (cookie set)
+      
+      // Update streak on login
+      try {
+        await axios.post(
+          "https://habitracker-y4i5.onrender.com/streak/update",
+          {},
+          { withCredentials: true }
+        );
+        toast.success("🔥+1", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      } catch (streakErr) {
+        console.log("Streak update failed:", streakErr);
+      }
+      
       navigate("/");   // App.jsx will fetch /auth/me automatically
       return;
 
