@@ -64,7 +64,7 @@ const DashboardLayout = ({ children }) => {
         openAi={() => setIsAiOpen(true)}
       />
 
-      <div className={`flex-1 transition-all duration-300 ${isSidebarOpen ? "ml-60" : "ml-16"}`}>
+      <div className={`flex-1 transition-all duration-300 md:${isSidebarOpen ? "ml-60" : "ml-16"} ml-16`}>
 
         <Navbar
           user={user}

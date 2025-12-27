@@ -49,9 +49,9 @@ const App = () => {
 
   return (
     <div className="flex">
-      <Sidebar user={user} logout={logout} />
+      <Sidebar user={user} logout={logout} openAi={() => {}} />
 
-      <div className="flex-1 ml-16">
+      <div className="flex-1 ml-16 md:ml-0">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login setUser={setUser} />} />

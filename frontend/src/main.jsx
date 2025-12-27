@@ -21,11 +21,16 @@ const Posts = lazy(() => import("./pages/Posts"));
 const OAuthSuccess = lazy(() => import("./pages/OAuthSuccess"));
 const ChatPage = lazy(() => import("./pages/ChatPage"));
 const NotFound = lazy(() => import("./pages/NotFound")); 
+const Loader = lazy(() => import("./pages/Loader"));
 
 // 🔹 Loading fallback
-const Loader = () => (
+const LoadingFallback = () => (
   <div className="min-h-[100dvh] flex items-center justify-center text-white">
-    Loading…
+    <div className="flex gap-2">
+      <span className="h-3 w-3 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.3s]" />
+      <span className="h-3 w-3 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.15s]" />
+      <span className="h-3 w-3 bg-indigo-500 rounded-full animate-bounce" />
+    </div>
   </div>
 );
 
@@ -33,7 +38,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <ToastContainer position="top-right" theme="dark" />
 
-    <Suspense fallback={<Loader />}>
+    <Suspense fallback={<LoadingFallback />}>
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/todo" element={<Todo />} />

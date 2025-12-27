@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Home,
@@ -18,6 +18,27 @@ import {
 
 const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Handle window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setMobileOpen(!mobileOpen);
+  };
 
   const privateLinks = [
     { name: "Home", path: "/", icon: <Home size={18} /> },
@@ -36,25 +57,47 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
 
   return (
     <>
-      {/* Toggle Button */}
+      {/* Mobile toggle button - only visible on mobile */}
+      <button
+        onClick={toggleMobileMenu}
+        className="fixed top-4 left-4 z-50 flex md:hidden h-9 w-9 items-center justify-center rounded-2xl border border-slate-700 bg-slate-950/90 text-slate-100 shadow-lg shadow-black/60 backdrop-blur-md transition-all hover:border-indigo-400 hover:bg-slate-900"
+      >
+        {mobileOpen ? <X size={16} /> : <Menu size={16} />}
+      </button>
+
+      {/* Desktop toggle button - only visible on desktop */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 flex h-9 w-9 items-center justify-center rounded-2xl border border-slate-700 bg-slate-950/90 text-slate-100 shadow-lg shadow-black/60 backdrop-blur-md transition-all hover:border-indigo-400 hover:bg-slate-900"
+        className="hidden md:flex fixed top-4 left-4 z-50 h-9 w-9 items-center justify-center rounded-2xl border border-slate-700 bg-slate-950/90 text-slate-100 shadow-lg shadow-black/60 backdrop-blur-md transition-all hover:border-indigo-400 hover:bg-slate-900"
       >
         {isOpen ? <X size={16} /> : <Menu size={16} />}
       </button>
 
+      {/* Mobile overlay */}
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 z-40 flex h-screen flex-col border-r border-slate-800/80 bg-slate-950/95 text-slate-100 shadow-[0_18px_45px_rgba(15,23,42,0.95)] backdrop-blur-2xl transition-all duration-300 ${
-          isOpen ? "w-60" : "w-16"
+          isMobile
+            ? mobileOpen
+              ? "w-60"
+              : "w-16"
+            : isOpen
+            ? "w-60"
+            : "w-16"
         }`}
       >
         {/* Logo / Brand */}
         <div className="relative flex h-16 items-center border-b border-slate-800/80 px-3">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(129,140,248,0.2),_transparent_60%)]" />
           <div className="relative flex items-center gap-2">
-            {isOpen ? (
+            {(isMobile ? mobileOpen : isOpen) ? (
               <>
                 <div className="flex h-8 w-8 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-fuchsia-500 text-[0.7rem] font-bold shadow-lg shadow-indigo-500/40">
                   HT
@@ -101,13 +144,13 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
                   >
                     {link.icon}
                   </div>
-                  {isOpen && (
+                  {(isMobile ? mobileOpen : isOpen) && (
                     <span className="ml-3 truncate font-medium">
                       {link.name}
                     </span>
                   )}
 
-                  {!isOpen && (
+                  {!(isMobile ? mobileOpen : isOpen) && (
                     <span className="pointer-events-none absolute left-14 rounded-md border border-slate-800 bg-slate-950 px-2 py-1 text-[0.7rem] font-medium text-slate-100 opacity-0 shadow-lg shadow-black/70 transition group-hover:opacity-100">
                       {link.name}
                     </span>
@@ -129,10 +172,10 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
               <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-slate-900/80 group-hover:bg-slate-900">
                 <MessageCircle size={18} />
               </div>
-              {isOpen && (
+              {(isMobile ? mobileOpen : isOpen) && (
                 <span className="ml-3 truncate font-medium">HabitBuddy</span>
               )}
-              {!isOpen && (
+              {!(isMobile ? mobileOpen : isOpen) && (
                 <span className="pointer-events-none absolute left-14 rounded-md border border-slate-800 bg-slate-950 px-2 py-1 text-[0.7rem] font-medium text-slate-100 opacity-0 shadow-lg shadow-black/70 transition group-hover:opacity-100">
                   HabitBuddy
                 </span>
@@ -151,7 +194,7 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
                 <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-slate-900/80 group-hover:bg-slate-900">
                   {link.icon}
                 </div>
-                {isOpen && (
+                {(isMobile ? mobileOpen : isOpen) && (
                   <span className="ml-3 truncate font-medium">
                     {link.name}
                   </span>
@@ -168,7 +211,7 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
               <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-rose-900/40 group-hover:bg-rose-900/60">
                 <LogOut size={18} />
               </div>
-              {isOpen && (
+              {(isMobile ? mobileOpen : isOpen) && (
                 <span className="ml-3 truncate font-medium">Logout</span>
               )}
             </button>
@@ -177,7 +220,7 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
 
         {/* Footer */}
         <div className="border-t border-slate-800/80 px-3 py-3 text-center text-[0.7rem] text-slate-500">
-          {isOpen ? "© 2025 HabitTracker" : "© 25"}
+          {(isMobile ? mobileOpen : isOpen) ? "© 2025 HabitTracker" : "© 25"}
         </div>
       </aside>
     </>

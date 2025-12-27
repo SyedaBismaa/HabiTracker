@@ -36,7 +36,6 @@ const EditProfileModal = ({ isOpen, onClose, user, onUpdate }) => {
     onClose();
 
   } catch (error) {
-    console.error("❌ UPDATE ERROR:", error);
     toast.error("Failed to update profile");
   }
 };

@@ -7,23 +7,7 @@ const PostCard = ({ post, onDelete }) => {
   const loggedUser = JSON.parse(localStorage.getItem("user"));
   const userId = loggedUser?._id || loggedUser?.id;
 
-  // 🔍 DEBUG LOGS
-  useEffect(() => {
-    console.log("──────── POST DEBUG ────────");
-    console.log("Logged User ID:", userId);
-    console.log("Post ID:", post._id);
-    console.log("Post User RAW:", post.user);
-    console.log(
-      "Post User ID:",
-      typeof post.user === "object" ? post.user?._id : post.user
-    );
-    console.log(
-      "IS OWNER:",
-      String(userId) ===
-        String(typeof post.user === "object" ? post.user?._id : post.user)
-    );
-    console.log("───────────────────────────");
-  }, [post, userId]);
+
 
   // OWNER CHECK
   const postUserId =
