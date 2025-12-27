@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen, setIsOpen, user, logout, openAi }) => {
       </button>
 
       {/* Mobile overlay */}
-      {mobileOpen && (
+      {mobileOpen && isMobile && (
         <div
           className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm md:hidden"
           onClick={() => setMobileOpen(false)}
